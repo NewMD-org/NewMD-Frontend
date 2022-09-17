@@ -1,0 +1,63 @@
+.TablePage_noselect {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.TablePage_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.TablePage_table {
+    width: 1500px;
+    height: 1000px;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.TablePage_index,
+.TablePage_data {
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    text-align: center;
+}
+
+tbody .TablePage_classes:hover {
+    background-color: rgba(54, 54, 54, 0.3);
+}
+
+tbody .TablePage_data {
+    position: relative;
+}
+
+tbody .TablePage_classes td:hover:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: rgba(54, 54, 54, 0.3);
+    z-index: -1;
+}
+
+tbody .TablePage_days {
+    position: relative;
+}
+
+tbody .TablePage_days:hover:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -9999px;
+    bottom: -9999px;
+    background-color: rgba(54, 54, 54, 0.3);
+    z-index: -1;
+}
