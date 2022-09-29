@@ -1,5 +1,4 @@
-.LoginPage {
-    font-family: montserrat;
+.Login {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -10,15 +9,15 @@
     -ms-user-select: none;
 }
 
-.LoginPage_centerDiv {
+.Login_centerDiv {
     text-align: center;
 }
 
-.LoginPage_rightDiv {
+.Login_rightDiv {
     text-align: right;
 }
 
-.LoginPage_background {
+.Login_background {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -28,28 +27,51 @@
     background-size: cover;
 }
 
-.LoginPage_logo {
-    position: relative;
-    top: 20%;
-    width: 40%;
-    max-width: 768px;
-    margin: auto;
+.Login_top {
+    position: absolute;
+    top: 0%;
+    bottom: 70%;
+    right: 0%;
+    left: 0%;
+}
+
+.Login_logo {
     display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 90px;
     background: transparent;
 }
 
-.LoginPage_center {
+.Login_bottom {
+    position: absolute;
+    top: 30%;
+    bottom: 0%;
+    right: 0%;
+    left: 0%;
+}
+
+.Login_center {
     position: relative;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: auto;
-    background: transparent;
-    border: none;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
 }
 
-form .LoginPage_textfield {
+.Login_form {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+}
+
+form .Login_textfield {
     position: relative;
     width: 100%;
     background: #e9f4fb;
@@ -58,9 +80,9 @@ form .LoginPage_textfield {
     z-index: 999;
 }
 
-form .LoginPage_textfield input {
+form .Login_textfield input {
     color: #000000;
-    padding: 0 5px;
+    padding: 0 15px;
     height: 50px;
     width: 90%;
     font-size: 16px;
@@ -72,12 +94,11 @@ form .LoginPage_textfield input {
     z-index: 999;
 }
 
-form .LoginPage_textfield input::placeholder {
+form .Login_textfield input::placeholder {
     color: #000000;
-    font-family: montserrat;
 }
 
-form .LoginPage_textfield .LoginPage_text_focusEffect {
+form .Login_textfield .Login_text_focusEffect {
     content: '';
     position: absolute;
     pointer-events: none;
@@ -90,23 +111,24 @@ form .LoginPage_textfield .LoginPage_text_focusEffect {
     transition: .5s;
 }
 
-form .LoginPage_textfield input:focus~.LoginPage_text_focusEffect {
+form .Login_textfield input:focus~.Login_text_focusEffect {
     width: 100%;
     opacity: 0.4;
 }
 
-.LoginPage_rememberme {
+.Login_rememberme {
     color: #e9f4fb;
-    margin-left: 20px;
-    margin-bottom: 60px;
+    margin-left: 30px;
 }
 
-.LoginPage_rememberme label {
+.Login_rememberme label {
+    display: block;
     cursor: pointer;
+    padding-left: 10px;
 }
 
-.LoginPage_signin {
-    font-family: montserrat;
+.Login_signin {
+    margin-top: 60px;
     background: #dba154;
     width: 60%;
     height: 60px;
@@ -121,12 +143,12 @@ form .LoginPage_textfield input:focus~.LoginPage_text_focusEffect {
     -webkit-transition-duration: 0.4s;
 }
 
-.LoginPage_signin:hover {
+.Login_signin:hover {
     transition-duration: 0.5s;
     transform: scale(1.1);
 }
 
-.LoginPage_signin:after {
+.Login_signin:after {
     pointer-events: none;
     content: "";
     display: block;
@@ -141,23 +163,26 @@ form .LoginPage_textfield input:focus~.LoginPage_text_focusEffect {
     box-shadow: 0 0 10px 10px white;
 }
 
-.LoginPage_signin:active:after {
+.Login_signin:active:after {
     box-shadow: 0 0 0 0 white;
     position: absolute;
     opacity: 1;
     transition: 0s;
 }
 
-.LoginPage_offscreen {
+.Login_offscreen {
     position: absolute;
     left: -9999px;
 }
 
-.LoginPage_errmsg {
+.Login_errmsg {
     background-color: lightpink;
     color: firebrick;
     font-weight: bold;
     padding: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
     margin-bottom: 0.5rem;
     border-radius: 3px;
 }

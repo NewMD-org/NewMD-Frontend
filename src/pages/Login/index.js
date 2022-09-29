@@ -1,11 +1,12 @@
-import { useRef, useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import cookie from 'react-cookies';
-import MdTimetableAPI from '../../api/MdTimetableAPI.js';
-import logo from './logo.svg';
-import background from './background.svg';
-import './index.css';
+import { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import cookie from "react-cookies";
+import MdTimetableAPI from "../../api/MdTimetableAPI.js";
+import TablePage from '../Table';
+import logo from "./logo.svg";
+import background from "./background.svg";
+import "./index.css";
 
 
 async function sleep(ms = 0) {
@@ -13,53 +14,63 @@ async function sleep(ms = 0) {
 }
 
 const Login = () => {
-    const userRef = useRef();
+    const IDRef = useRef();
+    const PWDRef = useRef();
     const errRef = useRef();
-    const defaultRememberMe = localStorage.getItem('authorization') ? jwt_decode(localStorage.getItem('authorization')).rememberMe === 'true' ? true : false : false;
+    const defaultRememberMe = localStorage.getItem("authorization") ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
 
-    const [ID, setID] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem('authorization')).userID : '');
-    const [PWD, setPWD] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem('authorization')).userPWD : '');
+    const [ID, setID] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "");
+    const [PWD, setPWD] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "");
     const [rememberMe, setRememberMe] = useState(defaultRememberMe.toString());
-    const [errMsg, setErrMsg] = useState('');
+    const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log('Render !');
+        console.log("Render !");
     });
 
     useEffect(() => {
-        userRef.current.focus();
+        IDRef.current.focus();
     }, []);
 
     useEffect(() => {
-        setErrMsg('');
+        setErrMsg("");
     }, [ID, PWD, rememberMe]);
 
     const handleSubmit = async (e) => {
         console.log(e);
         e.preventDefault();
         setLoading(true);
-        console.log('Form content :');
+        console.log("Form content :");
         console.log({ ID, PWD, rememberMe });
 
-        await sleep(3000); // Must be remove before publish
+        // await sleep(3000); // Must be remove before publish
 
-        if (ID === '') setErrMsg('Missing Username.');
-        if (PWD === '') setErrMsg('Missing Password.');
+        if (ID === "") {
+            setLoading(false);
+            IDRef.current.focus();
+            return setErrMsg("Missing Username.");
+        }
+        else if (PWD === "") {
+            setLoading(false);
+            IDRef.current.focus();
+            return setErrMsg("Missing Password.");
+        };
 
         try {
             const response = await new MdTimetableAPI(5).login(ID, PWD, rememberMe);
-            localStorage.setItem('authorization', response.headers.authorization);
-            cookie.save('navigate', 'true', { path: '/' });
-            setID('');
-            setPWD('');
-            setRememberMe('');
+            console.log(response);
+            localStorage.setItem("authorization", response.headers.authorization);
+            cookie.save("navigate", "true", { path: "/" });
+            setID("");
+            setPWD("");
+            setRememberMe("");
             setSuccess(true);
         }
         catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response.');
+                setErrMsg("No Server Response.");
             }
             else if (err.response?.status === 400) {
                 setErrMsg(err.response?.data);
@@ -71,10 +82,10 @@ const Login = () => {
                 setErrMsg(err.response?.data);
             }
             else {
-                setErrMsg('Unexpected Error.');
+                setErrMsg("Unexpected Error.");
             };
             localStorage.clear();
-            cookie.remove('navigate');
+            cookie.remove("navigate");
             errRef.current.focus();
         };
         setLoading(false);
@@ -83,39 +94,44 @@ const Login = () => {
     return (
         <>
             {success ? (
-                <Navigate to='/table' />
+                // <Navigate to="/table" />
+                <TablePage />
             ) : (
                 <>
-                    <div className='LoginPage'>
-                        <div className='LoginPage_background' style={{ backgroundImage: `url(${background})` }}></div>
-                        <img alt='logo' src={logo} className='LoginPage_logo' />
-                        <div className='LoginPage_center'>
-                            <p ref={errRef} className={errMsg ? 'LoginPage_errmsg' : 'LoginPage_offscreen'} aria-live='assertive'>{errMsg}</p>
-                            <form onSubmit={handleSubmit}>
-                                <div className='LoginPage_textfield LoginPage_rightDiv'>
-                                    <input type='text' name='ID' ref={userRef} value={ID} onChange={(e) => setID(e.target.value)} placeholder='Username' />
-                                    <span className='LoginPage_text_focusEffect'></span>
-                                </div>
-                                <div className='LoginPage_textfield LoginPage_rightDiv'>
-                                    <input className='LoginPage_password' type='password' name='PWD' value={PWD} onChange={(e) => setPWD(e.target.value)} placeholder='Password' />
-                                    <span className='LoginPage_text_focusEffect'></span>
-                                </div>
-                                <div className='LoginPage_rememberme'>
-                                    <div>
-                                        <input id='cbox' type='checkbox' name='rememberMe' onChange={(e) => setRememberMe(e.target.checked ? 'true' : 'false')} defaultChecked={defaultRememberMe} />
-                                        <label htmlFor='cbox'>Remember me for 7 days</label>
+                    <div className="Login">
+                        <div className="Login_background" style={{ backgroundImage: `url(${background})` }}></div>
+                        <div className="Login_top">
+                            <img alt="logo" src={logo} className="Login_logo" />
+                        </div>
+                        <div className="Login_bottom">
+                            <div className="Login_center">
+                                <p ref={errRef} className={errMsg ? "Login_errmsg" : "Login_offscreen"} aria-live="assertive">{errMsg}</p>
+                                <form className="Login_form" onSubmit={handleSubmit}>
+                                    <div className="Login_textfield">
+                                        <input type="text" name="ID" ref={IDRef} value={ID} onChange={(e) => setID(e.target.value)} placeholder="Username" />
+                                        <span className="Login_text_focusEffect"></span>
                                     </div>
-                                </div>
-                                <div className='LoginPage_centerDiv'>
-                                    {isLoading ? (
-                                        <button className='LoginPage_signin' style={{ 'cursor': 'not-allowed' }} disabled>
-                                            <span className='spinner-border' aria-hidden='true'></span>
-                                        </button>
-                                    ) : (
-                                        <button className='LoginPage_signin'>Sign in</button>
-                                    )}
-                                </div>
-                            </form>
+                                    <div className="Login_textfield">
+                                        <input type="password" name="PWD" ref={PWDRef} value={PWD} onChange={(e) => setPWD(e.target.value)} placeholder="Password" />
+                                        <span className="Login_text_focusEffect"></span>
+                                    </div>
+                                    <div className="pretty p-default p-curve Login_rememberme">
+                                        <input type="checkbox" name="rememberMe" onChange={(e) => setRememberMe(e.target.checked ? "true" : "false")} defaultChecked={defaultRememberMe} />
+                                        <div className="state p-success-o">
+                                            <label>Remember me for 7 days</label>
+                                        </div>
+                                    </div>
+                                    <div className="Login_centerDiv">
+                                        {isLoading ? (
+                                            <button className="Login_signin" style={{ "cursor": "not-allowed" }} disabled>
+                                                <span className="spinner-border" aria-hidden="true"></span>
+                                            </button>
+                                        ) : (
+                                            <button className="Login_signin">Sign in</button>
+                                        )}
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </>
@@ -125,38 +141,39 @@ const Login = () => {
 }
 
 export default function LoginPage() {
+    const navigate = useNavigate();
     try {
-        if (localStorage.getItem('authorization')) {
-            if (jwt_decode(localStorage.getItem('authorization')).exp <= (new Date().getTime() / 1000)) {
+        if (localStorage.getItem("authorization")) {
+            if (jwt_decode(localStorage.getItem("authorization")).exp <= (new Date().getTime() / 1000)) {
                 localStorage.clear();
-                cookie.remove('navigate');
-                console.log('Local storage authorization expired, clear local storage');
+                cookie.remove("navigate");
+                console.log("Local storage authorization expired, clear local storage");
                 return (<Login />);
             }
             else {
-                console.log('Local storage authorization found');
-                if (cookie.load('navigate') === 'true') {
-                    console.log('Cookie navigate found');
-                    return (<Navigate to='/table' />);
+                console.log("Local storage authorization found");
+                if (cookie.load("navigate") === "true") {
+                    console.log("Cookie navigate found");
+                    return navigate('/other-page', { state: { id: 7, color: 'green' } });
                 }
                 else {
-                    cookie.remove('navigate');
-                    console.log('Cookie navigate not found');
+                    cookie.remove("navigate");
+                    console.log("Cookie navigate not found");
                     return (<Login />);
                 };
             };
         }
         else {
-            console.log('Local storage authorization not found');
+            console.log("Local storage authorization not found");
             localStorage.clear();
-            cookie.remove('navigate');
+            cookie.remove("navigate");
             return (<Login />);
         };
     }
     catch (err) {
         localStorage.clear();
-        cookie.remove('navigate');
-        console.log('Catch error, clear local storage and cookie');
+        cookie.remove("navigate");
+        console.log("Catch error, clear local storage and cookie");
         return (<Login />);
     };
 }
