@@ -1,9 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/Login';
-import LogoutPage from './pages/Logout';
-import TablePage from './pages/Table';
+import { LoginPage } from './pages/Login';
+import { LogoutPage } from './pages/Logout';
+import { TablePage } from './pages/Table';
 
 
 const container = document.getElementById('root');

@@ -1,9 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import cookie from "react-cookies";
 import MdTimetableAPI from "../../api/MdTimetableAPI.js";
-import TablePage from '../Table';
+import {TablePage} from "../Table";
 import logo from "./logo.svg";
 import background from "./background.svg";
 import "./index.css";
@@ -27,7 +27,6 @@ const Login = () => {
     const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("Render !");
     });
 
     useEffect(() => {
@@ -39,11 +38,8 @@ const Login = () => {
     }, [ID, PWD, rememberMe]);
 
     const handleSubmit = async (e) => {
-        console.log(e);
         e.preventDefault();
         setLoading(true);
-        console.log("Form content :");
-        console.log({ ID, PWD, rememberMe });
 
         // await sleep(3000); // Must be remove before publish
 
@@ -60,7 +56,6 @@ const Login = () => {
 
         try {
             const response = await new MdTimetableAPI(5).login(ID, PWD, rememberMe);
-            console.log(response);
             localStorage.setItem("authorization", response.headers.authorization);
             cookie.save("navigate", "true", { path: "/" });
             setID("");
@@ -94,8 +89,8 @@ const Login = () => {
     return (
         <>
             {success ? (
-                // <Navigate to="/table" />
-                <TablePage />
+                <Navigate to="/table" />
+                // <TablePage />
             ) : (
                 <>
                     <div className="Login">
@@ -140,31 +135,26 @@ const Login = () => {
     );
 }
 
-export default function LoginPage() {
-    const navigate = useNavigate();
+export function LoginPage() {
+    // const navigate = useNavigate();
     try {
         if (localStorage.getItem("authorization")) {
             if (jwt_decode(localStorage.getItem("authorization")).exp <= (new Date().getTime() / 1000)) {
                 localStorage.clear();
                 cookie.remove("navigate");
-                console.log("Local storage authorization expired, clear local storage");
                 return (<Login />);
             }
             else {
-                console.log("Local storage authorization found");
                 if (cookie.load("navigate") === "true") {
-                    console.log("Cookie navigate found");
-                    return navigate('/other-page', { state: { id: 7, color: 'green' } });
+                    return <Navigate to="/table"/>
                 }
                 else {
                     cookie.remove("navigate");
-                    console.log("Cookie navigate not found");
                     return (<Login />);
                 };
             };
         }
         else {
-            console.log("Local storage authorization not found");
             localStorage.clear();
             cookie.remove("navigate");
             return (<Login />);
@@ -173,7 +163,6 @@ export default function LoginPage() {
     catch (err) {
         localStorage.clear();
         cookie.remove("navigate");
-        console.log("Catch error, clear local storage and cookie");
         return (<Login />);
     };
 }

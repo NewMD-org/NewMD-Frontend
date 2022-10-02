@@ -4,7 +4,7 @@ import background from './background.svg';
 import './index.css';
 
 
-export default function LogoutPage() {
+export function LogoutPage() {
     localStorage.clear();
     console.log('Local storage authorization removed');
     cookie.remove('navigate');

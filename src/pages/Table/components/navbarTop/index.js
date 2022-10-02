@@ -9,7 +9,7 @@ function removeCookie() {
     console.log("Cookie removed");
 }
 
-export default function NavbarTop() {
+export function NavbarTop() {
     // const defaultRememberMe = localStorage.getItem("authorization") ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
 
     // const [rememberMe, setRememberMe] = useState(defaultRememberMe.toString());
