@@ -2,15 +2,20 @@ import { useRef, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import cookie from "react-cookies";
-import MdTimetableAPI from "../../api/MdTimetableAPI.js";
-import {TablePage} from "../Table";
+import "./index.css";
 import logo from "./logo.svg";
 import background from "./background.svg";
-import "./index.css";
+import MdTimetableAPI from "../../api/MdTimetableAPI.js";
+import { Loader } from "./components/Loader";
 
 
-async function sleep(ms = 0) {
-    return new Promise(r => setTimeout(r, ms));
+function isValidAuth() {
+    try {
+        return localStorage.getItem("authorization") ? JSON.stringify(Object.keys(jwt_decode(localStorage.getItem("authorization")))) === JSON.stringify(["userID", "userPWD", "rememberMe", "iat", "exp"]) ? true : false : false;
+    }
+    catch (err) {
+        return false;
+    };
 }
 
 const Login = () => {
@@ -22,12 +27,10 @@ const Login = () => {
     const [ID, setID] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "");
     const [PWD, setPWD] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "");
     const [rememberMe, setRememberMe] = useState(defaultRememberMe.toString());
+    const [userDataStatus, setUserDataStatus] = useState("false");
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(false);
-
-    useEffect(() => {
-    });
 
     useEffect(() => {
         IDRef.current.focus();
@@ -41,8 +44,6 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
 
-        // await sleep(3000); // Must be remove before publish
-
         if (ID === "") {
             setLoading(false);
             IDRef.current.focus();
@@ -55,13 +56,19 @@ const Login = () => {
         };
 
         try {
-            const response = await new MdTimetableAPI(5).login(ID, PWD, rememberMe);
-            localStorage.setItem("authorization", response.headers.authorization);
-            cookie.save("navigate", "true", { path: "/" });
-            setID("");
-            setPWD("");
-            setRememberMe("");
-            setSuccess(true);
+            const response = await new MdTimetableAPI(6).login(ID, PWD, rememberMe);
+            if (response.data["error"] == null || response.data["userDataStatus"] === true) {
+                cookie.save("navigate", "true", { path: "/" });
+                localStorage.setItem("authorization", response.headers.authorization);
+                setID("");
+                setPWD("");
+                setRememberMe("");
+                setUserDataStatus(response.data["userDataStatus"]);
+                setSuccess(true);
+            }
+            else {
+                throw Error("joanne is smart");
+            };
         }
         catch (err) {
             if (!err?.response) {
@@ -83,14 +90,14 @@ const Login = () => {
             cookie.remove("navigate");
             errRef.current.focus();
         };
-        setLoading(false);
+
+        return setLoading(false);
     };
 
     return (
         <>
             {success ? (
-                <Navigate to="/table" />
-                // <TablePage />
+                <Navigate to="/table" state={{ "userDataStatus": userDataStatus }} />
             ) : (
                 <>
                     <div className="Login">
@@ -136,33 +143,75 @@ const Login = () => {
 }
 
 export function LoginPage() {
-    // const navigate = useNavigate();
-    try {
-        if (localStorage.getItem("authorization")) {
-            if (jwt_decode(localStorage.getItem("authorization")).exp <= (new Date().getTime() / 1000)) {
-                localStorage.clear();
-                cookie.remove("navigate");
-                return (<Login />);
-            }
-            else {
-                if (cookie.load("navigate") === "true") {
-                    return <Navigate to="/table"/>
+    var rememberMe = isValidAuth() ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
+    const ID = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "";
+    const PWD = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "";
+
+    const [success, setSuccess] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+    const [userDataStatus, setUserDataStatus] = useState("false");
+
+    const autoLogin = async () => {
+        try {
+            if (isValidAuth()) {
+                if (jwt_decode(localStorage.getItem("authorization")).exp >= (new Date().getTime() / 1000) && rememberMe) {
+                    console.log("Local storage authorization found");
+                    if (cookie.load("navigate") === "true") {
+                        console.log("Cookie navigate found");
+                        rememberMe = rememberMe.toString();
+                        const response = await new MdTimetableAPI(6).login(ID, PWD, rememberMe);
+                        if (response.data["error"] == null || response.data["userDataStatus"] === true) {
+                            localStorage.setItem("authorization", response.headers.authorization);
+                            cookie.save("navigate", "true", { path: "/" });
+                            setUserDataStatus(response.data["userDataStatus"]);
+                            setLoading(false);
+                            return setSuccess(true);
+                        }
+                        else {
+                            throw Error("joanne is smart");
+                        };
+
+                    }
+                    else {
+                        cookie.remove("navigate");
+                        console.log("Cookie navigate not found");
+                        setLoading(false);
+                        return setSuccess(false);
+                    };
                 }
                 else {
-                    cookie.remove("navigate");
-                    return (<Login />);
+                    throw new Error("Local storage authorization expired, clear local storage");
                 };
+            }
+            else {
+                throw new Error("Local storage authorization is invalid");
             };
         }
-        else {
+        catch (err) {
+            console.log(err.message);
+            console.log("Catch error, clear local storage and cookie");
             localStorage.clear();
             cookie.remove("navigate");
-            return (<Login />);
+            setLoading(false);
+            return setSuccess(false);
         };
     }
-    catch (err) {
-        localStorage.clear();
-        cookie.remove("navigate");
-        return (<Login />);
-    };
+
+    useEffect(() => {
+        autoLogin();
+    });
+
+    return (
+        <>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                success ? (
+                    <Navigate to="/table" state={{ "userDataStatus": userDataStatus }} />
+                ) : (
+                    <Login />
+                )
+            )}
+        </>
+    );
 }

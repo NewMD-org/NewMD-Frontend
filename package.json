@@ -11,7 +11,10 @@
     "pretty-checkbox": "^3.0.3",
     "react": "^18.2.0",
     "react-cookies": "^0.1.1",
+    "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
+    "react-native": "^0.70.3",
+    "react-navigation": "^4.4.4",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"

@@ -6,9 +6,8 @@ import './index.css';
 
 export function LogoutPage() {
     localStorage.clear();
-    console.log('Local storage authorization removed');
     cookie.remove('navigate');
-    console.log('Cookie navigate removed');
+    console.log("Clear local storage and cookie");
 
     return (
         <>

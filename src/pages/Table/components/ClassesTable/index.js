@@ -1,8 +1,8 @@
-import { Link, useMatch, useResolvedPath } from "react-router-dom";
+// import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "./index.css";
 
 
-export function classesTable() {
+export function ClassesTable() {
     return (
         <div className="TablePage_container">
             <table className='TablePage_table'>
@@ -19,14 +19,23 @@ export function classesTable() {
                     <tr className="TablePage_classes">
                         <th className="noselect TablePage_index">1</th>
                         <td className='TablePage_data' id="d1n1">
-                            {/* <div>{d1n1_C}</div> */}
-                            <div>teacher</div>
+                            <div>This</div>
                         </td>
-                        <td className='TablePage_data'>test</td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                        <td className='TablePage_data'>
+                            <div>Page</div>
+                        </td>
+                        <td className='TablePage_data'>
+                            <div>Is</div>
+                        </td>
+                        <td className='TablePage_data'>
+                            <div>Not</div>
+                        </td>
+                        <td className='TablePage_data'>
+                            <div>Finish</div>
+                        </td>
+                        <td className='TablePage_data'>
+                            <div>Yet</div>
+                        </td>
                     </tr>
                     <tr className="TablePage_classes">
                         <th className="noselect TablePage_index">2</th>
