@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import cookie, { remove } from "react-cookies";
+import cookie from "react-cookies";
 import "./index.css";
 import MdTimetableAPI from "../../../../api/MdTimetableAPI";
 

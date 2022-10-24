@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    // baseURL: "http://localhost:4000"
-    // baseURL: "http://aaaa.zapto.org"
-    baseURL: "http://cloud.newmd.oncloud.giize.com"
+    baseURL: "https://cloud.aaaaoncloud.eu.org"
 });
 
 export default class MdTimetableAPI {
