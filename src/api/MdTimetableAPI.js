@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://cloud.aaaaoncloud.eu.org"
+    baseURL: "https://MdTimetableAPI.alexliao.repl.co"
 });
 
 export default class MdTimetableAPI {
