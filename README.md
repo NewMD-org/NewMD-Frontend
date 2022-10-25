@@ -1,5 +1,5 @@
 <h1>NewMD</h1>
-<h3>Demo website : <a href="https://newmd.netlify.app" title="NewMD">NewMD</a></h3>
+<h3>Demo website : <a href="https://newmd.eu.org" title="NewMD">NewMD</a></h3>
 <h6><em>This is the beta version. It does not represent the final quality.</em></h6>
 
 <h2>Website status</h2>
