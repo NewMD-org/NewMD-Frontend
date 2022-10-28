@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import styles from "./Loader.module.css";
 
 
 function random(x) {
@@ -17,12 +17,12 @@ export function Loader() {
     ];
 
     return (
-        <div className="background">
-            <div className="text-area">
-                <p className="title">Do you know ?</p>
-                <p className="content">{message[random(message.length)]}</p>
+        <div className={styles.background}>
+            <div className={styles.text_area}>
+                <p className={styles.title}>Do you know ?</p>
+                <p className={styles.content}>{message[random(message.length)]}</p>
             </div>
-            <div className="bouncing-loader">
+            <div className={styles.bouncing_loader}>
                 <p>Loading</p>
                 <div></div>
                 <div></div>

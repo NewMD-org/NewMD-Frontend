@@ -1,4 +1,4 @@
-.TablePage_container {
+.container {
     position: absolute;
     top: 53%;
     left: 50%;
@@ -7,7 +7,7 @@
     transform: translate(-50%, -50%);
 }
 
-.TablePage_table {
+.table {
     width: 100%;
     height: 100%;
     border-collapse: collapse;
@@ -15,23 +15,23 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.TablePage_index,
-.TablePage_data {
+.index,
+.data {
     padding: 15px;
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     text-align: center;
 }
 
-tbody .TablePage_classes:hover {
+tbody .classes:hover {
     background-color: rgba(54, 54, 54, 0.3);
 }
 
-tbody .TablePage_data {
+tbody .data {
     position: relative;
 }
 
-tbody .TablePage_classes td:hover:before {
+tbody .classes td:hover:before {
     content: "";
     position: absolute;
     left: 0;
@@ -42,11 +42,11 @@ tbody .TablePage_classes td:hover:before {
     z-index: -1;
 }
 
-tbody .TablePage_days {
+tbody .days {
     position: relative;
 }
 
-tbody .TablePage_days:hover:before {
+tbody .days:hover:before {
     content: "";
     position: absolute;
     left: 0;

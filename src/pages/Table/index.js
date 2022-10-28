@@ -3,14 +3,14 @@ import cookie from "react-cookies";
 import { BrowserView, MobileView } from 'react-device-detect';
 import { NavbarTop } from "./components/NavbarTop";
 import { ClassesTable } from "./components/ClassesTable";
-import "./index.css";
+import styles from "./Table.module.css"
 
 
 const Table = ({ userDataStatus }) => {
     return (
         <>
             <BrowserView>
-                <div className="TablePage_background">
+                <div className={styles.background}>
                     <NavbarTop userDataStatus={userDataStatus} />
                     <ClassesTable />
                 </div>

@@ -2,11 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import cookie from "react-cookies";
-import "./index.css";
-import logo from "./logo.svg";
-import background from "./background.svg";
 import MdTimetableAPI from "../../api/MdTimetableAPI.js";
 import { Loader } from "./components/Loader";
+import logo from "./logo.svg";
+import background from "./background.svg";
+import styles from "./Login.module.css";
 
 
 function isValidAuth() {
@@ -16,6 +16,10 @@ function isValidAuth() {
     catch (err) {
         return false;
     };
+}
+
+function join(...array) {
+    return array.join(" ");
 }
 
 const Login = () => {
@@ -100,36 +104,35 @@ const Login = () => {
                 <Navigate to="/table" state={{ "userDataStatus": userDataStatus }} />
             ) : (
                 <>
-                    <div className="Login">
-                        <div className="Login_background" style={{ backgroundImage: `url(${background})` }}></div>
-                        <div className="Login_top">
-                            <img alt="logo" src={logo} className="Login_logo" />
+                    <div className={join(styles.background, "noselect")} style={{ backgroundImage: `url(${background})` }}>
+                        <div className={styles.top}>
+                            <img alt="logo" src={logo} className={styles.logo} />
                         </div>
-                        <div className="Login_bottom">
-                            <div className="Login_center">
-                                <p ref={errRef} className={errMsg ? "Login_errmsg" : "Login_offscreen"} aria-live="assertive">{errMsg}</p>
-                                <form className="Login_form" onSubmit={handleSubmit}>
-                                    <div className="Login_textfield">
+                        <div className={styles.bottom}>
+                            <div className={styles.center}>
+                                <p ref={errRef} className={errMsg ? styles.errmsg : styles.offscreen} aria-live="assertive">{errMsg}</p>
+                                <form className={styles.form} onSubmit={handleSubmit}>
+                                    <div className={styles.textfield}>
                                         <input type="text" name="ID" ref={IDRef} value={ID} onChange={(e) => setID(e.target.value)} placeholder="Username" />
-                                        <span className="Login_text_focusEffect"></span>
+                                        <span className={styles.text_focusEffect}></span>
                                     </div>
-                                    <div className="Login_textfield">
+                                    <div className={styles.textfield}>
                                         <input type="password" name="PWD" ref={PWDRef} value={PWD} onChange={(e) => setPWD(e.target.value)} placeholder="Password" />
-                                        <span className="Login_text_focusEffect"></span>
+                                        <span className={styles.text_focusEffect}></span>
                                     </div>
-                                    <div className="pretty p-default p-curve Login_rememberme">
+                                    <div className={join(styles.rememberme, "pretty", "p-default", "p-curve")}>
                                         <input type="checkbox" name="rememberMe" onChange={(e) => setRememberMe(e.target.checked ? "true" : "false")} defaultChecked={defaultRememberMe} />
-                                        <div className="state p-success-o">
+                                        <div className={join("state", "p-success-o")}>
                                             <label>Remember me for 7 days</label>
                                         </div>
                                     </div>
-                                    <div className="Login_centerDiv">
+                                    <div className={styles.centerDiv}>
                                         {isLoading ? (
-                                            <button className="Login_signin" style={{ "cursor": "not-allowed" }} disabled>
+                                            <button className={styles.signin} style={{ "cursor": "not-allowed" }} disabled>
                                                 <span className="spinner-border" aria-hidden="true"></span>
                                             </button>
                                         ) : (
-                                            <button className="Login_signin">Sign in</button>
+                                            <button className={styles.signin}>Sign in</button>
                                         )}
                                     </div>
                                 </form>

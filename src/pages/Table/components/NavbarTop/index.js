@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import "./index.css";
 import MdTimetableAPI from "../../../../api/MdTimetableAPI";
+import styles from "./NavbarTop.module.css"
 
 
 function removeCookie() {
     cookie.remove("navigate");
+}
+
+function join(...array) {
+    return array.join(" ");
 }
 
 export function NavbarTop({ userDataStatus: _userDataStatus }) {
@@ -73,8 +77,9 @@ export function NavbarTop({ userDataStatus: _userDataStatus }) {
         };
     };
 
-    const userDataStatusChange = () => {
-        if (userDataStatus !== "true") {
+    const userDataStatusChange = (checked) => {
+        setUserDataStatus(checked ? "true" : "false");
+        if (checked) {
             saveData(jwt);
         }
         else {
@@ -83,20 +88,20 @@ export function NavbarTop({ userDataStatus: _userDataStatus }) {
     };
 
     return (
-        <nav className="navbarTop">
-            <Link to="/" className="navbarTop_title noselect" onClick={removeCookie}>
+        <nav className={styles.navbar}>
+            <Link to="/" className={join(styles.title, "noselect")} onClick={removeCookie}>
                 NewMD
             </Link>
             <ul>
                 <li>
-                    <div className="noselect navbarTop_saveData pretty p-switch p-fill">
-                        <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => { setUserDataStatus(e.target.checked ? "true" : "false"); userDataStatusChange(); }} />
-                        <div className="state">
+                    <div className={join(styles.saveData, "noselect", "pretty", "p-switch", "p-fill")}>
+                        <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
+                        <div className={"state"}>
                             <label>Save Data</label>
                         </div>
                     </div>
                 </li>
-                <li className="navbarTop_logout noselect">
+                <li className={join(styles.logout, "noselect")}>
                     <Link to="/logout">
                         Logout
                     </Link>

@@ -1,104 +1,108 @@
 // import { Link, useMatch, useResolvedPath } from "react-router-dom";
-import "./index.css";
+import styles from "./ClassesTable.module.css";
 
+
+function join(...array) {
+    return array.join(" ");
+}
 
 export function ClassesTable() {
     return (
-        <div className="TablePage_container">
-            <table className='TablePage_table'>
+        <div className={styles.container}>
+            <table className={styles.table}>
                 <tbody>
-                    <tr className="noselect">
-                        <th className='TablePage_index'></th>
-                        <th className="days TablePage_index">Day 1</th>
-                        <th className="days TablePage_index">Day 2</th>
-                        <th className="days TablePage_index">Day 3</th>
-                        <th className="days TablePage_index">Day 4</th>
-                        <th className="days TablePage_index">Day 5</th>
-                        <th className="days TablePage_index">Day 6</th>
+                    <tr className={"noselect"}>
+                        <th className={styles.index}></th>
+                        <th className={join(styles.index, styles.days)}>Day 1</th>
+                        <th className={join(styles.index, styles.days)}>Day 2</th>
+                        <th className={join(styles.index, styles.days)}>Day 3</th>
+                        <th className={join(styles.index, styles.days)}>Day 4</th>
+                        <th className={join(styles.index, styles.days)}>Day 5</th>
+                        <th className={join(styles.index, styles.days)}>Day 6</th>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">1</th>
-                        <td className='TablePage_data' id="d1n1">
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>1</th>
+                        <td className={styles.data} id="d1n1">
                             <div>This</div>
                         </td>
-                        <td className='TablePage_data'>
+                        <td className={styles.data}>
                             <div>Page</div>
                         </td>
-                        <td className='TablePage_data'>
+                        <td className={styles.data}>
                             <div>Is</div>
                         </td>
-                        <td className='TablePage_data'>
+                        <td className={styles.data}>
                             <div>Not</div>
                         </td>
-                        <td className='TablePage_data'>
+                        <td className={styles.data}>
                             <div>Finish</div>
                         </td>
-                        <td className='TablePage_data'>
+                        <td className={styles.data}>
                             <div>Yet</div>
                         </td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">2</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>2</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">3</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>3</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">4</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>4</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">5</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>5</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">6</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>6</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">7</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>7</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
-                    <tr className="TablePage_classes">
-                        <th className="noselect TablePage_index">8</th>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
-                        <td className='TablePage_data'></td>
+                    <tr className={styles.classes}>
+                        <th className={join("noselect", styles.index)}>8</th>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
+                        <td className={styles.data}></td>
                     </tr>
                 </tbody>
             </table>

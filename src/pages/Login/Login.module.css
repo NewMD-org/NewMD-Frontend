@@ -1,23 +1,4 @@
-.Login {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    user-select: none;
-    background-color: #152024;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-.Login_centerDiv {
-    text-align: center;
-}
-
-.Login_rightDiv {
-    text-align: right;
-}
-
-.Login_background {
+.background {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -27,7 +8,7 @@
     background-size: cover;
 }
 
-.Login_top {
+.top {
     position: absolute;
     top: 0%;
     bottom: 70%;
@@ -35,7 +16,7 @@
     left: 0%;
 }
 
-.Login_logo {
+.logo {
     display: block;
     max-width: 100%;
     max-height: 100%;
@@ -47,7 +28,7 @@
     background: transparent;
 }
 
-.Login_bottom {
+.bottom {
     position: absolute;
     top: 30%;
     bottom: 0%;
@@ -55,7 +36,7 @@
     left: 0%;
 }
 
-.Login_center {
+.center {
     position: relative;
     display: block;
     margin-left: auto;
@@ -65,13 +46,30 @@
     padding-right: 10%;
 }
 
-.Login_form {
+.errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    margin-bottom: 0.5rem;
+    border-radius: 3px;
+}
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.form {
     margin-left: auto;
     margin-right: auto;
     max-width: 400px;
 }
 
-form .Login_textfield {
+.textfield {
     position: relative;
     width: 100%;
     background: #e9f4fb;
@@ -80,7 +78,7 @@ form .Login_textfield {
     z-index: 999;
 }
 
-form .Login_textfield input {
+.textfield input {
     color: #000000;
     padding: 0 15px;
     height: 50px;
@@ -94,11 +92,11 @@ form .Login_textfield input {
     z-index: 999;
 }
 
-form .Login_textfield input::placeholder {
+.textfield input::placeholder {
     color: #000000;
 }
 
-form .Login_textfield .Login_text_focusEffect {
+.textfield .text_focusEffect {
     content: '';
     position: absolute;
     pointer-events: none;
@@ -111,23 +109,27 @@ form .Login_textfield .Login_text_focusEffect {
     transition: .5s;
 }
 
-form .Login_textfield input:focus~.Login_text_focusEffect {
+.textfield input:focus~.text_focusEffect {
     width: 100%;
     opacity: 0.4;
 }
 
-.Login_rememberme {
+.rememberme {
     color: #e9f4fb;
     margin-left: 30px;
 }
 
-.Login_rememberme label {
+.rememberme label {
     display: block;
     cursor: pointer;
     padding-left: 10px;
 }
 
-.Login_signin {
+.centerDiv {
+    text-align: center;
+}
+
+.signin {
     position: relative;
     margin-top: 60px;
     background: #dba154;
@@ -144,12 +146,12 @@ form .Login_textfield input:focus~.Login_text_focusEffect {
     -webkit-transition-duration: 0.4s;
 }
 
-.Login_signin:hover {
+.signin:hover {
     transition-duration: 0.5s;
     transform: scale(1.1);
 }
 
-.Login_signin:after {
+.signin:after {
     pointer-events: none;
     content: "";
     display: block;
@@ -164,26 +166,10 @@ form .Login_textfield input:focus~.Login_text_focusEffect {
     box-shadow: 0 0 10px 10px white;
 }
 
-.Login_signin:active:after {
+.signin:active:after {
     box-shadow: 0 0 0 0 white;
     position: absolute;
     opacity: 1;
     transition: 0s;
 }
 
-.Login_offscreen {
-    position: absolute;
-    left: -9999px;
-}
-
-.Login_errmsg {
-    background-color: lightpink;
-    color: firebrick;
-    font-weight: bold;
-    padding: 0.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 400px;
-    margin-bottom: 0.5rem;
-    border-radius: 3px;
-}
