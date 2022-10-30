@@ -1,5 +1,6 @@
 import axios from "axios";
 
+
 const api = axios.create({
     baseURL: "https://cloud.newmd.eu.org"
 });
@@ -16,6 +17,17 @@ export default class MdTimetableAPI {
                 timeout: this.timeoutSeconds,
                 headers: {
                     "Content-Type": "application/json",
+                },
+            }
+        );
+    }
+
+    table(jwt) {
+        return api.get("/table?meetURL=false",
+            {
+                timeout: this.timeoutSeconds,
+                headers: {
+                    "Authorization": jwt,
                 },
             }
         );

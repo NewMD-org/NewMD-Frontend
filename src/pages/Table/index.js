@@ -1,34 +1,37 @@
+import { useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
-import { BrowserView, MobileView } from 'react-device-detect';
+// import { BrowserView, MobileView } from 'react-device-detect';
 import { NavbarTop } from "./components/NavbarTop";
 import { ClassesTable } from "./components/ClassesTable";
+import { Loader } from "./components/Loader";
 import styles from "./Table.module.css"
 
 
-const Table = ({ userDataStatus }) => {
+const Table = ({ state, authorization }) => {
+    const [isLoading, setIsLoading] = useState(true);
+
+
+
+
     return (
         <>
-            <BrowserView>
-                <div className={styles.background}>
-                    <NavbarTop userDataStatus={userDataStatus} />
-                    <ClassesTable />
-                </div>
-            </BrowserView >
-            <MobileView>
-                <h1>Not finish yet</h1>
-            </MobileView>
+            <div className={styles.background}>
+                {isLoading ? <Loader /> : <></>}
+                <NavbarTop state={state} authorization={authorization} />
+                <ClassesTable isLoading={isLoading} setIsLoading={setIsLoading} state={state} authorization={authorization} />
+            </div>
         </>
     );
 }
 
 export function TablePage() {
     const { state } = useLocation();
+    const authorization =localStorage.getItem("authorization");
 
     try {
-        const userDataStatus = state ? state : null;
-        if (userDataStatus != null) {
-            return (<Table userDataStatus={userDataStatus} />);
+        if (state != null) {
+            return (<Table state={state ? state : null} authorization={authorization} />);
         }
         else {
             return (<Navigate to="/" />);

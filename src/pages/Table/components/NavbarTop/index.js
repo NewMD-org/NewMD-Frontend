@@ -13,18 +13,17 @@ function join(...array) {
     return array.join(" ");
 }
 
-export function NavbarTop({ userDataStatus: _userDataStatus }) {
-    const [userDataStatus, setUserDataStatus] = useState(_userDataStatus["userDataStatus"].toString());
+export function NavbarTop({ state, authorization }) {
+    const [userDataStatus, setUserDataStatus] = useState(state["userDataStatus"].toString());
     const [isLoading, setIsLoading] = useState(false);
-    const jwt = localStorage.getItem("authorization");
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const saveData = async (token) => {
         setIsLoading(true);
         try {
             console.log("Saving user data . . .");
-            const response = await new MdTimetableAPI(35).save(token);
+            const response = await new MdTimetableAPI(50).save(token);
             if (response.status === 200) {
                 navigate("/table", { state: { "userDataStatus": true } });
                 console.log(response.data);
@@ -51,7 +50,7 @@ export function NavbarTop({ userDataStatus: _userDataStatus }) {
         setIsLoading(true);
         try {
             console.log("Deleting user data . . .");
-            const response = await new MdTimetableAPI(35).delete(token);
+            const response = await new MdTimetableAPI(5).delete(token);
             if (response.status === 200) {
                 navigate("/table", { state: { "userDataStatus": false } });
                 console.log(response.data);
@@ -80,33 +79,35 @@ export function NavbarTop({ userDataStatus: _userDataStatus }) {
     const userDataStatusChange = (checked) => {
         setUserDataStatus(checked ? "true" : "false");
         if (checked) {
-            saveData(jwt);
+            saveData(authorization);
         }
         else {
-            deleteData(jwt);
+            deleteData(authorization);
         };
     };
 
     return (
-        <nav className={styles.navbar}>
-            <Link to="/" className={join(styles.title, "noselect")} onClick={removeCookie}>
-                NewMD
-            </Link>
-            <ul>
-                <li>
-                    <div className={join(styles.saveData, "noselect", "pretty", "p-switch", "p-fill")}>
-                        <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
-                        <div className={"state"}>
-                            <label>Save Data</label>
+        <div className={styles.container}>
+            <nav className={styles.navbar}>
+                <Link to="/" className={join(styles.title, "noselect")} onClick={removeCookie}>
+                    NewMD
+                </Link>
+                <ul>
+                    <li>
+                        <div className={join(styles.saveData, "noselect", "pretty", "p-switch", "p-fill")}>
+                            <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
+                            <div className={"state"}>
+                                <label>Save Data</label>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li className={join(styles.logout, "noselect")}>
-                    <Link to="/logout">
-                        Logout
-                    </Link>
-                </li>
-            </ul>
-        </nav>
+                    </li>
+                    <li className={join(styles.logout, "noselect")}>
+                        <Link to="/logout">
+                            Logout
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     );
 }
