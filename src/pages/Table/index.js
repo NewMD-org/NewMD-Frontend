@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
-// import { BrowserView, MobileView } from 'react-device-detect';
 import { NavbarTop } from "./components/NavbarTop";
 import { ClassesTable } from "./components/ClassesTable";
 import { Loader } from "./components/Loader";
@@ -10,9 +9,6 @@ import styles from "./Table.module.css"
 
 const Table = ({ state, authorization }) => {
     const [isLoading, setIsLoading] = useState(true);
-
-
-
 
     return (
         <>
