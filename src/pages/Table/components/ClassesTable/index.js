@@ -39,6 +39,30 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
     const navigate = useNavigate();
     const location = useLocation();
 
+    useEffect(() => {
+        fetchData(authorization);
+    }, []);
+
+    useEffect(() => {
+        if (location.state["tableData"] ? true : false) {
+            setTableData(isBigScreen ? location.state["tableData"] : shortenTableData(location.state["tableData"]));
+            setIsLoading(false);
+
+            function handleResize() {
+                setIsBigScreen(getWindowDimensions().width > 930);
+                if (getWindowDimensions().width > 930) {
+                    setTableData(state["tableData"]);
+                }
+                else {
+                    setTableData(shortenTableData(state["tableData"]));
+                };
+            }
+
+            window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
+        };
+    }, [location.state]);
+
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
         return {
@@ -79,38 +103,12 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                 console.log("No server response");
             }
             else {
-                console.log(err);
+                console.log(err.message);
             };
             cookie.remove("navigate");
             navigate("/");
         };
     }
-
-    useEffect(() => {
-        fetchData(authorization);
-    }, []);
-
-    useEffect(() => {
-        if (location.state["tableData"] ? true : false) {
-            setTableData(isBigScreen ? location.state["tableData"] : shortenTableData(location.state["tableData"]));
-            setIsLoading(false);
-            
-            function handleResize() {
-                setIsBigScreen(getWindowDimensions().width > 930);
-                console.log("WindowDimensions : " + getWindowDimensions().width);
-                console.log("isBigScreen : " + (getWindowDimensions().width > 930));
-                if (getWindowDimensions().width > 930) {
-                    setTableData(state["tableData"]);
-                }
-                else {
-                    setTableData(shortenTableData(state["tableData"]));
-                };
-            }
-
-            window.addEventListener("resize", handleResize);
-            return () => window.removeEventListener("resize", handleResize);
-        };
-    }, [location.state]);
 
     return (
         <div className={styles.container}>

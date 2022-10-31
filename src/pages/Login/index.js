@@ -35,14 +35,30 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().height > 650);
 
     useEffect(() => {
         IDRef.current.focus();
+
+        function handleResize() {
+            setIsBigScreen(getWindowDimensions().height > 650);
+        }
+
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
         setErrMsg("");
     }, [ID, PWD, rememberMe]);
+
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+            width,
+            height
+        };
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -105,9 +121,13 @@ const Login = () => {
             ) : (
                 <>
                     <div className={join(styles.background, "noselect")} style={{ backgroundImage: `url(${background})` }}>
-                        <div className={styles.top}>
-                            <img alt="logo" src={logo} className={styles.logo} />
-                        </div>
+                        {isBigScreen ? (
+                            <div className={styles.top}>
+                                <img alt="logo" src={logo} className={styles.logo} />
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                         <div className={styles.bottom}>
                             <div className={styles.center}>
                                 <p ref={errRef} className={errMsg ? styles.errmsg : styles.offscreen} aria-live="assertive">{errMsg}</p>

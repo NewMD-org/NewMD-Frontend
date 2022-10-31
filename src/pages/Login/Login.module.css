@@ -10,27 +10,42 @@
 
 .top {
     position: absolute;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     top: 0%;
-    bottom: 70%;
+    bottom: 65%;
     right: 0%;
     left: 0%;
 }
 
 .logo {
-    display: block;
-    max-width: 100%;
+    max-width: 1030px;
     max-height: 100%;
+    margin: 0 auto;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 40px;
     background: transparent;
+}
+
+@media (min-height: 651px) {
+    .bottom {
+        top: 35%;
+    }
+}
+
+@media (max-height: 650px) {
+    .bottom {
+        top: 5%;
+    }
 }
 
 .bottom {
     position: absolute;
-    top: 30%;
     bottom: 0%;
     right: 0%;
     left: 0%;
@@ -41,7 +56,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 5%;
+    padding-top: 3%;
     padding-left: 10%;
     padding-right: 10%;
 }
@@ -172,4 +187,3 @@
     opacity: 1;
     transition: 0s;
 }
-
