@@ -23,7 +23,7 @@ export function NavbarTop({ state, authorization }) {
         setIsLoading(true);
         try {
             console.log("Saving user data . . .");
-            const response = await new MdTimetableAPI(50).save(token);
+            const response = await new MdTimetableAPI(60).save(token);
             if (response.status === 200) {
                 navigate("/table", { state: { "userDataStatus": true } });
                 console.log(response.data);
@@ -38,7 +38,7 @@ export function NavbarTop({ state, authorization }) {
                 console.log("No server response");
             }
             else {
-                console.log("Error occur");
+                console.log(err);
             };
         }
         finally {
