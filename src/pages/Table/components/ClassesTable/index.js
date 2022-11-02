@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 // import { isDesktop as isBigScreen } from "react-device-detect";
 import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
-import { Modal } from "./components/Modal";
+import { Detail } from "./components/Detail";
 import MdTimetableAPI from "../../../../api/MdTimetableAPI";
 import styles from "./ClassesTable.module.css";
 
@@ -38,7 +38,7 @@ const shortenTableData = (data) => {
 export function ClassesTable({ isLoading, setIsLoading, state, authorization }) {
     const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().width > 930);
     const [showDetail, setShowDetail] = useState(false);
-    const [modal, setModal] = useState({});
+    const [detail, setDetail] = useState({ "name": null, "classID": null });
     const [tableData, setTableData] = useState({});
     const [showSat, setShowSat] = useState(false);
 
@@ -99,6 +99,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                     setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
                     navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"] }, replace: true });
+                    console.log("Success");
                 }
                 else {
                     throw Error("Joanne is smart");
@@ -110,6 +111,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                     setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
                     navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"] }, replace: true });
+                    console.log("Success");
                 }
                 else {
                     throw Error("Joanne is smart");
@@ -131,7 +133,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
 
     return (
         <div className={styles.container}>
-            {showDetail ? <Modal setShowDetail={setShowDetail} /> : <></>}
+            {showDetail ? <Detail setShowDetail={setShowDetail} setDetail={setDetail} detail={detail} /> : <></>}
             <table className={styles.table}>
                 <thead>
                     <tr className={"noselect"}>
@@ -153,28 +155,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>1</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>08:15<br />|<br />09:05</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["1"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["1"]["classname"], "classID": tableData["day1"]["1"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["1"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["1"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["1"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["1"]["classname"], "classID": tableData["day2"]["1"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["1"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["1"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["1"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["1"]["classname"], "classID": tableData["day3"]["1"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["1"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["1"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["1"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["1"]["classname"], "classID": tableData["day4"]["1"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["1"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["1"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["1"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["1"]["classname"], "classID": tableData["day5"]["1"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["1"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["1"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["1"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["1"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["1"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -185,28 +187,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>2</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>09:15<br />|<br />10:05</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["2"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["2"]["classname"], "classID": tableData["day1"]["2"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["2"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["2"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["2"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["2"]["classname"], "classID": tableData["day2"]["2"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["2"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["2"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["2"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["2"]["classname"], "classID": tableData["day3"]["2"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["2"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["2"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["2"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["2"]["classname"], "classID": tableData["day4"]["2"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["2"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["2"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["2"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["2"]["classname"], "classID": tableData["day5"]["2"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["2"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["2"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["2"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["2"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["2"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -217,28 +219,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>3</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>10:15<br />|<br />11:05</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["3"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["3"]["classname"], "classID": tableData["day1"]["3"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["3"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["3"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["3"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["3"]["classname"], "classID": tableData["day2"]["3"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["3"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["3"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["3"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["3"]["classname"], "classID": tableData["day3"]["3"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["3"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["3"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["3"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["3"]["classname"], "classID": tableData["day4"]["3"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["3"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["3"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["3"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["3"]["classname"], "classID": tableData["day5"]["3"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["3"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["3"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["3"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["3"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["3"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -249,28 +251,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>4</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>11:15<br />|<br />12:05</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["4"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["4"]["classname"], "classID": tableData["day1"]["4"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["4"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["4"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["4"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["4"]["classname"], "classID": tableData["day2"]["4"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["4"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["4"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["4"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["4"]["classname"], "classID": tableData["day3"]["4"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["4"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["4"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["4"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["4"]["classname"], "classID": tableData["day4"]["4"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["4"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["4"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["4"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["4"]["classname"], "classID": tableData["day5"]["4"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["4"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["4"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["4"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["4"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["4"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -288,28 +290,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>5</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>13:20<br />|<br />14:10</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["5"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["5"]["classname"], "classID": tableData["day1"]["5"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["5"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["5"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["5"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["5"]["classname"], "classID": tableData["day2"]["5"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["5"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["5"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["5"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["5"]["classname"], "classID": tableData["day3"]["5"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["5"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["5"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["5"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["5"]["classname"], "classID": tableData["day4"]["5"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["5"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["5"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["5"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["5"]["classname"], "classID": tableData["day5"]["5"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["5"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["5"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["5"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["5"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["5"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -320,28 +322,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>6</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>14:20<br />|<br />15:10</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["6"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["6"]["classname"], "classID": tableData["day1"]["6"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["6"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["6"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["6"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["6"]["classname"], "classID": tableData["day2"]["6"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["6"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["6"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["6"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["6"]["classname"], "classID": tableData["day3"]["6"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["6"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["6"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["6"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["6"]["classname"], "classID": tableData["day4"]["6"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["6"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["6"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["6"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["6"]["classname"], "classID": tableData["day5"]["6"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["6"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["6"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["6"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["6"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["6"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -352,28 +354,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>7</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>15:20<br />|<br />16:10</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["7"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["7"]["classname"], "classID": tableData["day1"]["7"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["7"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["7"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["7"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["7"]["classname"], "classID": tableData["day2"]["7"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["7"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["7"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["7"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["7"]["classname"], "classID": tableData["day3"]["7"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["7"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["7"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["7"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["7"]["classname"], "classID": tableData["day4"]["7"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["7"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["7"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["7"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["7"]["classname"], "classID": tableData["day5"]["7"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["7"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["7"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["7"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["7"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["7"]["teacher"]}</div>
                             </td>
                         ) : (
@@ -384,28 +386,28 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                         {isBigScreen ? <th className={join("noselect", styles.index)}>8</th> : <></>}
                         <th className={join("noselect", styles.indexMobile)}>16:20<br />|<br />17:10</th>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day1"]["8"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day1"]["8"]["classname"], "classID": tableData["day1"]["8"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day1"]["8"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day1"]["8"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day2"]["8"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day2"]["8"]["classname"], "classID": tableData["day2"]["8"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day2"]["8"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day2"]["8"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day3"]["8"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day3"]["8"]["classname"], "classID": tableData["day3"]["8"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day3"]["8"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day3"]["8"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day4"]["8"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day4"]["8"]["classname"], "classID": tableData["day4"]["8"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day4"]["8"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day4"]["8"]["teacher"]}</div>
                         </td>
                         <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                            <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day5"]["8"]["classname"]}</div>
+                            <div className={styles.classname} onClick={() => { setDetail({ "name": tableData["day5"]["8"]["classname"], "classID": tableData["day5"]["8"]["classID"] }); setShowDetail(true); }}>{isLoading ? <></> : tableData["day5"]["8"]["classname"]}</div>
                             <div>{isLoading ? <></> : tableData["day5"]["8"]["teacher"]}</div>
                         </td>
                         {showSat ? (
                             <td className={isBigScreen ? styles.data : styles.dataMobile}>
-                                <div className={styles.classname} onClick={() => { setShowDetail(true); setModal({}); }}>{isLoading ? <></> : tableData["day6"]["8"]["classname"]}</div>
+                                <div className={styles.classname} onClick={() => { setShowDetail(true); setDetail(); }}>{isLoading ? <></> : tableData["day6"]["8"]["classname"]}</div>
                                 <div>{isLoading ? <></> : tableData["day6"]["8"]["teacher"]}</div>
                             </td>
                         ) : (
