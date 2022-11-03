@@ -33,6 +33,14 @@ export default class MdTimetableAPI {
         );
     }
 
+    viewvt(year, classID) {
+        return api.get(`/viewvt?year=${year}&classID=${classID}`,
+            {
+                timeout: this.timeoutSeconds,
+            }
+        );
+    }
+
     read(jwt) {
         return api.get("/database/read",
             {

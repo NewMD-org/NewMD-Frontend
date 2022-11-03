@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import { isDesktop as isBigScreen } from "react-device-detect";
 import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { Detail } from "./components/Detail";
@@ -14,7 +13,6 @@ function join(...array) {
 const shortenTableData = (data) => {
     var dataString = JSON.stringify(data);
     const replacements = [
-        ["-", " "],
         ["技高課內社團", "課內社團"],
         ["Javascript", "JS"],
         ["\\(輔\\)", ""],
@@ -47,6 +45,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
 
     useEffect(() => {
         fetchData(authorization);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -67,6 +66,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
             window.addEventListener("resize", handleResize);
             return () => window.removeEventListener("resize", handleResize);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state]);
 
     function getWindowDimensions() {
@@ -77,7 +77,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
         };
     }
 
-    function checkSat(obj) {
+    const checkSat = (obj) => {
         const classes = Object.keys(obj["day6"]);
         var haveData = false;
         for (let index of classes) {
@@ -98,7 +98,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                 if (response.status === 200) {
                     setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
-                    navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"] }, replace: true });
+                    navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"], "year": response.data["year"] }, replace: true });
                     console.log("Success");
                 }
                 else {
@@ -110,7 +110,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                 if (response.status === 200) {
                     setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
-                    navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"] }, replace: true });
+                    navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"], "year": response.data["year"] }, replace: true });
                     console.log("Success");
                 }
                 else {

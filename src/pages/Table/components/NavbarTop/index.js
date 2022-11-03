@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import MdTimetableAPI from "../../../../api/MdTimetableAPI";
 import { Attention } from "./components/Attention";
@@ -19,6 +19,7 @@ export function NavbarTop({ state, authorization }) {
     const [isLoading, setIsLoading] = useState(false);
     const [showAttention, setShowAttention] = useState(false);
 
+    const location = useLocation();
     const navigate = useNavigate();
 
     const deleteData = async (token) => {
@@ -28,7 +29,7 @@ export function NavbarTop({ state, authorization }) {
             const response = await new MdTimetableAPI(5).delete(token);
             if (response.status === 200) {
                 setUserDataStatus("false");
-                navigate("/table", { state: { "userDataStatus": false } });
+                navigate("/table", { state: { "userDataStatus": false, "tableData": location.state["tableData"], "year": location.state["year"] }, replace: true });
                 console.log(response.data);
             }
             else {
@@ -73,8 +74,18 @@ export function NavbarTop({ state, authorization }) {
                         <li>
                             <div className={join(styles.saveData, "noselect", "pretty", "p-switch", "p-fill")}>
                                 <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
-                                <div className={"state"}>
-                                    <label>Save Data</label>
+                                <div className={"state p-success"}>
+                                    <label>
+                                        {isLoading ? (
+                                            location.state["userDataStatus"] ? (
+                                                <>Deleting</>
+                                            ) : (
+                                                <>Saving</>
+                                            )
+                                        ) : (
+                                            <>Save Data</>
+                                        )}
+                                    </label>
                                 </div>
                             </div>
                         </li>

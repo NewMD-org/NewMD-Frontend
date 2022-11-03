@@ -1,9 +1,13 @@
 import styles from "./Loader.module.css";
 
 
+function join(...array) {
+    return array.join(" ");
+}
+
 export function Loader() {
     return (
-        <div className={styles.loader_container}>
+        <div className={join(styles.loader_container, "noselect")}>
             <div className={styles.spinner_container}>
                 <div className={styles.spinner}></div>
             </div>

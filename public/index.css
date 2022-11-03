@@ -4,3 +4,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
 }
+
+.yesselect {
+    user-select: all;
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+}

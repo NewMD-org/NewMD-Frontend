@@ -35,13 +35,13 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().height > 650);
+    const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().height > 500);
 
     useEffect(() => {
         IDRef.current.focus();
 
         function handleResize() {
-            setIsBigScreen(getWindowDimensions().height > 650);
+            setIsBigScreen(getWindowDimensions().height > 500);
         }
 
         window.addEventListener("resize", handleResize);
@@ -76,9 +76,9 @@ const Login = () => {
         };
 
         try {
-            const response = await new MdTimetableAPI(6).login(ID, PWD, rememberMe);
+            const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
             if (response.data["error"] == null || response.data["userDataStatus"] === true) {
-                cookie.save("navigate", "true", { path: "/" });
+                cookie.save("navigate", "true", { path: "/", maxAge: 60 * 10 });
                 localStorage.setItem("authorization", response.headers.authorization);
                 setID("");
                 setPWD("");
@@ -182,10 +182,10 @@ export function LoginPage() {
                     if (cookie.load("navigate") === "true") {
                         console.log("Cookie navigate found");
                         rememberMe = rememberMe.toString();
-                        const response = await new MdTimetableAPI(6).login(ID, PWD, rememberMe);
+                        const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
                         if (response.data["error"] == null || response.data["userDataStatus"] === true) {
                             localStorage.setItem("authorization", response.headers.authorization);
-                            cookie.save("navigate", "true", { path: "/" });
+                            cookie.save("navigate", "true", { path: "/", maxAge: 60 * 10 });
                             setUserDataStatus(response.data["userDataStatus"]);
                             setLoading(false);
                             return setSuccess(true);

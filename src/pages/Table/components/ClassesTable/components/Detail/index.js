@@ -1,44 +1,89 @@
 import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import MdTimetableAPI from "../../../../../../api/MdTimetableAPI";
 import styles from "./Detail.module.css";
 
 
+function join(...array) {
+    return array.join(" ");
+}
+
+function findPath(obj, target) {
+    for (let day of Object.keys(obj)) {
+        for (let ele of Object.keys(obj[day])) {
+            if (obj[day][ele]["classID"] === target) {
+                return [day, ele];
+            };
+        };
+    };
+}
+
+const copyToClipboard = async (text) => {
+    if ("clipboard" in navigator) {
+        return await navigator.clipboard.writeText(text);
+    } else {
+        return document.execCommand("copy", true, text);
+    };
+};
+
 export function Detail({ setShowDetail, setDetail, detail }) {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [message, setMessage] = useState({});
+    const [copySuccess0, setCopySuccess0] = useState(false);
+    const [copySuccess1, setCopySuccess1] = useState(false);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (Object.keys(message).length !== 0) {
+            setIsLoading(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [message]);
+
+    useEffect(() => {
+        viewVT(location.state["year"], detail["classID"]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const closeModal = useCallback(_ => {
         setDetail({ "name": null, "classID": null });
         setShowDetail(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setShowDetail]);
 
     const viewVT = async (year, classID) => {
+        setIsLoading(true);
         console.log("Getting VT");
-        console.log(classID);
-        // if (Object.keys(cache).includes(classID)) {
-        //     return cache[classID];
-        // }
-        // else {
-        //     const response = await axios.get(`http://140.128.156.92/AACourses/Web/qVT.php?F_sPeriodsem=${year}&eID=${classID}`);
-        //     if (response.status === 200) {
-        //         const $ = load(response.data);
-        //         const obj = {
-        //             meet: $("#main > div:nth-child(3) > a").html() ? $("#main > div:nth-child(3) > a").html().replace(/ /g, "") : "",
-        //             classroom: $("#main > div:nth-child(5)").html() ? $("#main > div:nth-child(5)").html() : ""
-        //         };
-        //         cache[classID] = obj;
-        //         return obj;
-        //     }
-        //     else {
-        //         throw new Error("Error during getting VT");
-        //     };
-        // };
-    }
-
-    useEffect(() => {
-        viewVT("1111", detail["classID"]);
-    }, []);
+        try {
+            var data = {};
+            if (location.state["userDataStatus"]) {
+                const path = findPath(location.state["tableData"], classID);
+                const classObj = location.state["tableData"][path[0]][path[1]];
+                data = {
+                    meet: classObj["meet"],
+                    classroom: classObj["classroom"]
+                };
+            }
+            else {
+                data = await (await new MdTimetableAPI(10).viewvt(year, classID)).data;
+            };
+            setMessage(
+                {
+                    meet: data["meet"] === "" ? "none" : data["meet"],
+                    classroom: data["classroom"] === "" ? "none" : data["classroom"]
+                }
+            );
+            console.log("Success");
+        }
+        catch (err) {
+            closeModal();
+            setIsLoading(false);
+        };
+    };
 
     return (
-        <div className={styles.modal_container}>
+        <div className={join(styles.modal_container, "noselect")}>
             {isLoading ? (
                 <>
                     <div className={styles.spinner_container}>
@@ -54,14 +99,22 @@ export function Detail({ setShowDetail, setDetail, detail }) {
                     <div className={styles.outside_close} onClick={() => closeModal()}></div>
                     <div className={styles.modal}>
                         <div className={styles.close_container}>
+                            <h1 className={styles.modal__title}>{detail["name"]}</h1>
                             <p className={styles.close} onClick={() => closeModal()}>×</p>
                         </div>
-                        <h1 className={styles.modal__title}>{detail["name"]}</h1>
-                        <p className={styles.modal__text}>Sorry, this page isn't finished yet.</p>
-                        {/* <div className={styles.button_container}>
-                            <button className={styles.button_cancel} onClick={() => closeModal()}>Cancel</button>
-                            <button className={styles.button_continue}>Continue &rarr;</button>
-                        </div> */}
+
+                        <div className={styles.field_container}>
+                            <p className={styles.modal__text}>Google Meet</p>
+                            <div className={styles.form}>
+                                <p className={join(styles.field, "yesselect")}>{message.meet}</p>
+                                <span onClick={() => { copyToClipboard(message.meet); setCopySuccess0(true); }} onMouseLeave={() => setCopySuccess0(false)}>{copySuccess0 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
+                            </div>
+                            <p className={styles.modal__text}>Classroom Code</p>
+                            <div className={styles.form}>
+                                <p className={join(styles.field, "yesselect")}>{message.classroom}</p>
+                                <span onClick={() => { copyToClipboard(message.classroom); setCopySuccess1(true); }} onMouseLeave={() => setCopySuccess1(false)}>{copySuccess1 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
+                            </div>
+                        </div>
                     </div>
                 </>
             )}

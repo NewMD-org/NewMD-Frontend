@@ -23,7 +23,7 @@ const Table = ({ state, authorization }) => {
 
 export function TablePage() {
     const { state } = useLocation();
-    const authorization =localStorage.getItem("authorization");
+    const authorization = localStorage.getItem("authorization");
 
     try {
         if (state != null) {
