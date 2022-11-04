@@ -11,3 +11,22 @@
     -moz-user-select: all;
     -ms-user-select: all;
 }
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+/* 網頁捲軸【背景】顏色 */
+::-webkit-scrollbar-track {
+    background: #404566;
+}
+
+/* 網頁捲軸【把手】顏色 */
+::-webkit-scrollbar-thumb {
+    background: #2b2e46;
+}
+
+/* 網頁捲軸【滑過時】把手的顏色 */
+::-webkit-scrollbar-thumb:hover {
+    background: #30344e;
+}

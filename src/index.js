@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import { LoginPage } from "./pages/Login";
 import { LogoutPage } from "./pages/Logout";
 import { TablePage } from "./pages/Table";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicy";
 
 
 const container = document.getElementById("root");
@@ -18,6 +19,7 @@ root.render(
                 <Route path="login" index element={<LoginPage />} />
                 <Route path="logout" index element={<LogoutPage />} />
                 <Route path="table" index element={<TablePage />} />
+                <Route path="privacy-policy" index element={<PrivacyPolicyPage />} />
             </Route>
         </Routes>
     </BrowserRouter>
