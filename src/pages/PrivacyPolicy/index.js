@@ -4,10 +4,14 @@ import background from "./background.svg";
 import styles from "./PrivacyPolicy.module.css"
 
 
+function join(...array) {
+    return array.join(" ");
+}
+
 export function PrivacyPolicyPage() {
     return (
         <div className={styles.background} style={{ backgroundImage: `url(${background})` }}>
-            <img alt="logo" src={logo} className={styles.logo} />
+            <img alt="logo" src={logo} className={join(styles.logo, "noselect")} />
             <Message />
         </div>
     );

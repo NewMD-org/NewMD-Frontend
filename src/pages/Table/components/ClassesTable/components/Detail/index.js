@@ -106,13 +106,13 @@ export function Detail({ setShowDetail, setDetail, detail }) {
                         <div className={styles.field_container}>
                             <p className={styles.modal__text}>Google Meet</p>
                             <div className={styles.form}>
-                                <p className={join(styles.field, "yesselect")}>{message.meet}</p>
-                                <span onClick={() => { copyToClipboard(message.meet); setCopySuccess0(true); }} onMouseLeave={() => setCopySuccess0(false)}>{copySuccess0 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
+                                <a className={join(styles.field, "yesselect")} href={message.meet} target="_blank" rel="noreferrer">{message.meet}</a>
+                                <span title="Copy" onClick={() => { copyToClipboard(message.meet); setCopySuccess0(true); }} onMouseLeave={() => setCopySuccess0(false)}>{copySuccess0 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
                             </div>
                             <p className={styles.modal__text}>Classroom Code</p>
                             <div className={styles.form}>
                                 <p className={join(styles.field, "yesselect")}>{message.classroom}</p>
-                                <span onClick={() => { copyToClipboard(message.classroom); setCopySuccess1(true); }} onMouseLeave={() => setCopySuccess1(false)}>{copySuccess1 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
+                                <span title="Copy" onClick={() => { copyToClipboard(message.classroom); setCopySuccess1(true); }} onMouseLeave={() => setCopySuccess1(false)}>{copySuccess1 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
                             </div>
                         </div>
                     </div>
