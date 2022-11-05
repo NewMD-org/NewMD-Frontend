@@ -65,7 +65,7 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
             <div className={styles.outside_close} onClick={() => closeModal()}></div>
             <div className={styles.modal}>
                 <h1 className={styles.modal__title}>Attention !</h1>
-                <p className={styles.modal__text}>Enabling the "Save Data" option means that your account and password will be stored in our server !</p>
+                <p className={styles.modal__text}>Enabling the "Save Data" option means that your account and password will be stored in our server!</p>
                 <p className={styles.modal__footer}>Please head to our <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" title="Privacy Policy">Privacy Policy</a> page for more information.</p>
                 <div className={styles.button_container}>
                     <button className={styles.button_cancel} onClick={() => closeModal()}>Cancel</button>

@@ -8,7 +8,7 @@ function random(x) {
 
 export function Loader() {
     const message = [
-        "Your password stored in Mingdao's server isn't hashed !",
+        "Your password stored in Mingdao's server isn't hashed!",
         "It dosn't matter if you input your account & password with capital letter.",
         "We won't store your data unless you enable \"Save Data\" option.",
         "We use MongoDB to store your data.",
