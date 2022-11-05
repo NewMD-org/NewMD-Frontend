@@ -1,6 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration.js";
 import { LoginPage } from "./pages/Login";
 import { LogoutPage } from "./pages/Logout";
 import { TablePage } from "./pages/Table";
@@ -24,3 +25,5 @@ root.render(
         </Routes>
     </BrowserRouter>
 );
+
+serviceWorkerRegistration.register();

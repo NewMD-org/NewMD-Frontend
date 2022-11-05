@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import cookie from "react-cookies";
 import MdTimetableAPI from "../../api/MdTimetableAPI.js";
 import { Loader } from "./components/Loader";
+import { InstallPWA } from "./components/InstallPWA/index.js";
 import logo from "./logo.svg";
 import background from "./background.svg";
 import styles from "./Login.module.css";
@@ -123,7 +124,7 @@ const Login = () => {
                     <div className={join(styles.background, "noselect")} style={{ backgroundImage: `url(${background})` }}>
                         {isBigScreen ? (
                             <div className={styles.top}>
-                                <img alt="logo" src={logo} className={styles.logo} />
+                                <img alt="logo" src={logo} className={styles.logo} draggable="false" />
                             </div>
                         ) : (
                             <></>
@@ -157,6 +158,7 @@ const Login = () => {
                                     </div>
                                 </form>
                             </div>
+                            <InstallPWA />
                         </div>
                     </div>
                 </>

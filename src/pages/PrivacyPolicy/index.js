@@ -11,7 +11,7 @@ function join(...array) {
 export function PrivacyPolicyPage() {
     return (
         <div className={styles.background} style={{ backgroundImage: `url(${background})` }}>
-            <img alt="logo" src={logo} className={join(styles.logo, "noselect")} />
+            <img alt="logo" src={logo} className={join(styles.logo, "noselect")} draggable="false" />
             <Message />
         </div>
     );
