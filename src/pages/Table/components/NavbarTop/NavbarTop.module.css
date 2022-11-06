@@ -54,7 +54,6 @@
     display: flex;
     align-items: center;
     top: 50%;
-    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
 }
 
