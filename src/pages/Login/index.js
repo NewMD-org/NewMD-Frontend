@@ -12,7 +12,11 @@ import styles from "./Login.module.css";
 
 function isValidAuth() {
     try {
-        return localStorage.getItem("authorization") ? JSON.stringify(Object.keys(jwt_decode(localStorage.getItem("authorization")))) === JSON.stringify(["userID", "userPWD", "rememberMe", "iat", "exp"]) ? true : false : false;
+        return [
+            typeof (localStorage.getItem("authorization")) === "string",
+            JSON.stringify(Object.keys(jwt_decode(localStorage.getItem("authorization")))) === JSON.stringify(["userID", "userPWD", "rememberMe", "iat", "exp"]),
+            jwt_decode(localStorage.getItem("authorization")).exp >= (new Date().getTime() / 1000)
+        ].every(test => test === true);
     }
     catch (err) {
         return false;
@@ -27,7 +31,7 @@ const Login = () => {
     const IDRef = useRef();
     const PWDRef = useRef();
     const errRef = useRef();
-    const defaultRememberMe = localStorage.getItem("authorization") ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
+    const defaultRememberMe = isValidAuth() ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
 
     const [ID, setID] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "");
     const [PWD, setPWD] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "");
@@ -65,48 +69,36 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
 
-        if (ID === "") {
-            setLoading(false);
-            IDRef.current.focus();
-            return setErrMsg("Missing Username.");
-        }
-        else if (PWD === "") {
-            setLoading(false);
-            IDRef.current.focus();
-            return setErrMsg("Missing Password.");
-        };
-
         try {
             const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
-            if (response.data["error"] == null || response.data["userDataStatus"] === true) {
+
+            if (response["error"] === false) {
                 cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
-                localStorage.setItem("authorization", response.headers.authorization);
+                localStorage.setItem("authorization", response["data"]["authorization"]);
                 setID("");
                 setPWD("");
                 setRememberMe("");
-                setUserDataStatus(response.data["userDataStatus"]);
+                setUserDataStatus(response["data"]["userDataStatus"]);
                 setSuccess(true);
             }
             else {
-                throw Error("joanne is smart");
+                if (response["message"] === "Missing Username.") {
+                    IDRef.current.focus();
+                }
+                else if (response["message"] === "Missing Password.") {
+                    PWDRef.current.focus();
+                }
+                else {
+                    errRef.current.focus();
+                };
+
+                setErrMsg(response["message"]);
+                localStorage.clear();
+                cookie.remove("navigate");
             };
         }
         catch (err) {
-            if (!err?.response) {
-                setErrMsg("No Server Response.");
-            }
-            else if (err.response?.status === 400) {
-                setErrMsg(err.response?.data);
-            }
-            else if (err.response?.status === 401) {
-                setErrMsg(err.response?.data);
-            }
-            else if (err.response?.status === 500) {
-                setErrMsg(err.response?.data);
-            }
-            else {
-                setErrMsg("Unexpected Error.");
-            };
+            setErrMsg("Unexpected Error.");
             localStorage.clear();
             cookie.remove("navigate");
             errRef.current.focus();
@@ -168,10 +160,6 @@ const Login = () => {
 }
 
 export function LoginPage() {
-    var rememberMe = isValidAuth() ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
-    const ID = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "";
-    const PWD = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "";
-
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const [userDataStatus, setUserDataStatus] = useState("false");
@@ -179,23 +167,26 @@ export function LoginPage() {
     const autoLogin = async () => {
         try {
             if (isValidAuth()) {
-                if (jwt_decode(localStorage.getItem("authorization")).exp >= (new Date().getTime() / 1000) && rememberMe) {
-                    console.log("Local storage authorization found");
+                console.log("Local storage authorization found");
+                const rememberMe = jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false;
+                const ID = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "";
+                const PWD = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "";
+
+                if (rememberMe) {
                     if (cookie.load("navigate") === "true") {
                         console.log("Cookie navigate found");
-                        rememberMe = rememberMe.toString();
-                        const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
-                        if (response.data["error"] == null || response.data["userDataStatus"] === true) {
-                            localStorage.setItem("authorization", response.headers.authorization);
+                        const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe.toString());
+
+                        if (response["error"] === false) {
+                            localStorage.setItem("authorization", response["data"]["authorization"]);
                             cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
-                            setUserDataStatus(response.data["userDataStatus"]);
+                            setUserDataStatus(response["data"]["userDataStatus"]);
                             setLoading(false);
                             return setSuccess(true);
                         }
                         else {
                             throw Error("joanne is smart");
                         };
-
                     }
                     else {
                         cookie.remove("navigate");
