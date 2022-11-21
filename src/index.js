@@ -26,4 +26,5 @@ root.render(
     </BrowserRouter>
 );
 
-serviceWorkerRegistration.register();
+// serviceWorkerRegistration.register();
+serviceWorkerRegistration.unregister();

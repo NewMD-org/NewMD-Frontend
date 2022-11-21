@@ -9,23 +9,22 @@
 
 .top {
     bottom: 65%;
-    display: flex;
-    justify-content: center;
     left: 0;
     position: absolute;
     right: 0;
     top: 0;
-    flex-direction: column;
-    align-items: center;
 }
 
 .logo {
     background: transparent;
+    display: block;
     max-height: 100%;
     max-width: 1030px;
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 @media (min-height: 501px) {
