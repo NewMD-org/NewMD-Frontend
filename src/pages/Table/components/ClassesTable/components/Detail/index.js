@@ -97,7 +97,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
             ) : (
                 <>
                     <div className={styles.outside_close} onClick={() => closeModal()}></div>
-                    <div className={styles.modal}>
+                    <div className={join(styles.modal, "fadeIn")} style={{ "--fadeInDuration": "1s" }}>
                         <div className={styles.close_container}>
                             <h1 className={styles.modal__title}>{detail["name"]}</h1>
                             <p className={styles.close} onClick={() => closeModal()}>×</p>

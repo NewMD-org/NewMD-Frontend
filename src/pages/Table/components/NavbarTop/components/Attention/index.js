@@ -63,7 +63,7 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
     return (
         <div className={join(styles.modal_container, "noselect")}>
             <div className={styles.outside_close} onClick={() => closeModal()}></div>
-            <div className={styles.modal}>
+            <div className={join(styles.modal, "fadeIn")} style={{ "--fadeInDuration": "1s" }}>
                 <h1 className={styles.modal__title}>Attention !</h1>
                 <p className={styles.modal__text}>Enabling the "Save Data" option means that your account and password will be stored in our server!</p>
                 <p className={styles.modal__footer}>Please head to our <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" title="Privacy Policy">Privacy Policy</a> page for more information.</p>
@@ -72,6 +72,6 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
                     <button className={styles.button_continue} onClick={() => setAgree(true)}>Continue &rarr;</button>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

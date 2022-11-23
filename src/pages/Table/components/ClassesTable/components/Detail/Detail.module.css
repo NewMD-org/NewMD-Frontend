@@ -241,7 +241,7 @@
     line-height: 25px;
     color: var(--group-color);
     background: var(--group-background);
-    border: 1px solid var(--group-border);
+    border: 2px solid var(--group-border);
     transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
 }
 
@@ -254,56 +254,4 @@
 .form:hover>.field {
     outline: none;
     border-color: var(--group-border-focus);
-}
-
-.button_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-}
-
-.button_cancel {
-    padding: 0.5rem 1.6rem;
-    border: 1px solid hsla(0, 0%, 100%, .2);
-    border-radius: 100rem;
-    color: inherit;
-    background: transparent;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: inherit;
-    letter-spacing: .2rem;
-    transition: .2s;
-    cursor: pointer;
-    background: hsl(0, 58%, 35%);
-    border-color: hsl(0, 58%, 35%);
-}
-
-.button_cancel:hover,
-.button_cancel:focus {
-    background: hsl(0, 58%, 49%);
-    border-color: hsl(0, 58%, 49%);
-}
-
-.button_continue {
-    padding: 0.5rem 1.6rem;
-    border: 1px solid hsla(0, 0%, 100%, .2);
-    border-radius: 100rem;
-    color: inherit;
-    background: transparent;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: inherit;
-    letter-spacing: .2rem;
-    transition: .2s;
-    cursor: pointer;
-    background: hsl(150, 58%, 35%);
-    border-color: hsl(150, 58%, 35%);
-}
-
-.button_continue:hover,
-.button_continue:focus {
-    background: hsl(150, 58%, 49%);
-    border-color: hsl(150, 58%, 49%);
 }
