@@ -116,7 +116,9 @@ const Login = () => {
                     <div className={join(styles.background, "noselect")} style={{ backgroundImage: `url(${background})` }}>
                         {isBigScreen ? (
                             <div className={styles.top}>
-                                <img alt="logo" src={logo} className={styles.logo} draggable="false" />
+                                <div className={styles.logo}>
+                                    <img alt="logo" src={logo} draggable="false" />
+                                </div>
                             </div>
                         ) : (
                             <></>
