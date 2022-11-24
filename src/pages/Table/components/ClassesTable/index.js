@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
+import axios from "axios";
 import { Detail } from "./components/Detail";
 import MdTimetableAPI from "../../../../api/MdTimetableAPI";
 import styles from "./ClassesTable.module.css";
@@ -10,21 +11,26 @@ function join(...array) {
     return array.join(" ");
 }
 
-const shortenTableData = (data) => {
+const shortenTableData = async (data) => {
+    if (!data) return;
+    const t0 = performance.now();
+
     var dataString = JSON.stringify(data);
-    const replacements = [
-        ["技高課內社團", "課內社團"],
-        ["Javascript", "JS"],
-        ["\\(輔\\)", ""],
-        ["全民國防教育", "國防"],
-        ["國語文", "國文"],
-        ["英語文", "英文"],
-        ["英語會話", "ESL "],
-        ["基本電學", "電學"],
-        ["基礎電子", "電子"],
-        ["電腦繪圖", "電繪"],
-        ["團體活動\\(班會\\)", "班會"]
-    ];
+
+    var replacements = [];
+
+    try {
+        console.log("Getting classname replacement : start");
+        const replacementJSON = await axios.get("https://raw.githubusercontent.com/NewMD-org/Frontend-classnameReplacement/main/classnameReplacement.json");
+        replacements = replacementJSON.data ? replacementJSON.data["replacements"] : [];
+
+        const t1 = performance.now();
+        console.log(`Getting classname replacement : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
+    }
+    catch (err) {
+        replacements = [];
+        console.log("Getting classname replacement : failed");
+    };
 
     for (let replacement of replacements) {
         dataString = dataString.replace(new RegExp(replacement[0], "gm"), replacement[1]);
@@ -50,24 +56,26 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
 
     useEffect(() => {
         if (location.state["tableData"] ? true : false) {
-            setTableData(isBigScreen ? location.state["tableData"] : shortenTableData(location.state["tableData"]));
-            setIsLoading(false);
-
-            function handleResize() {
+            (async function () {
+                setTableData(isBigScreen ? location.state["tableData"] : await shortenTableData(location.state["tableData"]));
+                setIsLoading(false);
+            })();
+            async function handleResize() {
                 setIsBigScreen(getWindowDimensions().width > 930);
-                if (getWindowDimensions().width > 930) {
-                    setTableData(state["tableData"]);
-                }
-                else {
-                    setTableData(shortenTableData(state["tableData"]));
-                };
             }
-
             window.addEventListener("resize", handleResize);
             return () => window.removeEventListener("resize", handleResize);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state]);
+
+    useEffect(() => {
+        console.log(`Screen size : ${isBigScreen ? "big" : "small"}`);
+        (async function () {
+            setTableData(isBigScreen ? location.state["tableData"] : await shortenTableData(location.state["tableData"]));
+        })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isBigScreen]);
 
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
@@ -91,27 +99,32 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
 
     const fetchData = async (token) => {
         setIsLoading(true);
+        const t0 = performance.now();
+
         try {
-            console.log("Getting table data . . .");
             if (state["userDataStatus"]) {
+                console.log("Getting table data : start (from database)");
                 const response = await new MdTimetableAPI(40).read(token);
                 if (response.status === 200) {
-                    setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
+                    setTableData(isBigScreen ? response.data["table"] : await shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
                     navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"], "year": response.data["year"] }, replace: true });
-                    console.log("Success");
+                    const t1 = performance.now();
+                    console.log(`Getting table data : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
                 }
                 else {
                     throw Error("Joanne is smart");
                 };
             }
             else {
+                console.log("Getting table data : start (direct)");
                 const response = await new MdTimetableAPI(40).table(token);
                 if (response.status === 200) {
-                    setTableData(isBigScreen ? response.data["table"] : shortenTableData(response.data["table"]));
+                    setTableData(isBigScreen ? response.data["table"] : await shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
                     navigate("/table", { state: { "userDataStatus": state["userDataStatus"], "tableData": response.data["table"], "year": response.data["year"] }, replace: true });
-                    console.log("Success");
+                    const t1 = performance.now();
+                    console.log(`Getting table data : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
                 }
                 else {
                     throw Error("Joanne is smart");
@@ -119,13 +132,11 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
             };
         }
         catch (err) {
-            console.log(err);
             if (!err?.response) {
-                console.log("No server response");
-            }
-            else {
-                console.log(err.message);
+                console.log("Getting table data : no server response");
             };
+            console.log("Getting table data : failed");
+            console.log("Clear cookie");
             cookie.remove("navigate");
             navigate("/");
         };
