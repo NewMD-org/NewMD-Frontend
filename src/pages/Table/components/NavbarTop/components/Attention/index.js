@@ -16,14 +16,17 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
     const saveData = async (token) => {
         setIsLoading(true);
         try {
-            console.log("Saving user data . . .");
+            console.log("Save user data : start");
+            const t0 = performance.now();
             const response = await new MdTimetableAPI(60).save(token);
             if (response.status === 200) {
                 const response = await new MdTimetableAPI(40).read(token);
                 if (response.status === 200) {
                     setUserDataStatus("true");
                     navigate("/table", { state: { "userDataStatus": true, "tableData": response.data["table"], "year": response.data["year"] }, replace: true });
-                    console.log("Success");
+                    const t1 = performance.now();
+                    console.log(`Save user data : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
+                    console.timeEnd();
                 }
                 else {
                     throw Error("Joanne is smart");
@@ -36,11 +39,9 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
         catch (err) {
             setUserDataStatus("false");
             if (!err?.response) {
-                console.log("No server response");
-            }
-            else {
-                console.log(err);
+                console.log("Save user data : no server response");
             };
+            console.log("Save user data : failed");
         }
         finally {
             setIsLoading(false);

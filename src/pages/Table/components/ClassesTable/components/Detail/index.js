@@ -54,10 +54,11 @@ export function Detail({ setShowDetail, setDetail, detail }) {
 
     const viewVT = async (year, classID) => {
         setIsLoading(true);
-        console.log("Getting VT");
+        const t0 = performance.now();
         try {
             var data = {};
             if (location.state["userDataStatus"]) {
+                console.log("Getting VT : start (from database)");
                 const path = findPath(location.state["tableData"], classID);
                 const classObj = location.state["tableData"][path[0]][path[1]];
                 data = {
@@ -66,6 +67,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
                 };
             }
             else {
+                console.log("Getting VT : start (direct)");
                 data = await (await new MdTimetableAPI(10).viewvt(year, classID)).data;
             };
             setMessage(
@@ -74,12 +76,15 @@ export function Detail({ setShowDetail, setDetail, detail }) {
                     classroom: data["classroom"] === "" ? "none" : data["classroom"]
                 }
             );
-            console.log("Success");
+
+            const t1 = performance.now();
+            console.log(`Getting VT : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
         }
         catch (err) {
+            console.log("Getting VT : failed");
             closeModal();
-            setIsLoading(false);
         };
+        setIsLoading(false);
     };
 
     return (

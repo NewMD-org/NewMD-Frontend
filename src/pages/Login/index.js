@@ -31,7 +31,7 @@ const Login = () => {
     const IDRef = useRef();
     const PWDRef = useRef();
     const errRef = useRef();
-    const defaultRememberMe = isValidAuth() ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false : false;
+    const defaultRememberMe = isValidAuth() ? jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" : false;
 
     const [ID, setID] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "");
     const [PWD, setPWD] = useState(defaultRememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "");
@@ -66,12 +66,14 @@ const Login = () => {
     }
 
     const handleSubmit = async (e) => {
+        console.log("Manual login : start");
+        const t0 = performance.now();
+        console.log(`ID : ${ID}\nPWD : ${PWD}\nrememberMe : ${rememberMe}`);
         e.preventDefault();
         setLoading(true);
 
         try {
             const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
-
             if (response["error"] === false) {
                 cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
                 localStorage.setItem("authorization", response["data"]["authorization"]);
@@ -79,13 +81,15 @@ const Login = () => {
                 setPWD("");
                 setRememberMe("");
                 setUserDataStatus(response["data"]["userDataStatus"]);
+                const t1 = performance.now();
+                console.log(`Manual login : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
                 setSuccess(true);
             }
             else {
-                if (response["message"] === "Missing Username.") {
+                if (response["message"] === "Missing Username") {
                     IDRef.current.focus();
                 }
-                else if (response["message"] === "Missing Password.") {
+                else if (response["message"] === "Missing Password") {
                     PWDRef.current.focus();
                 }
                 else {
@@ -93,12 +97,16 @@ const Login = () => {
                 };
 
                 setErrMsg(response["message"]);
+                console.log(`Manual login : ${response["message"]}`);
+                console.log("Manual login : failed");
+                console.log("Clear local storage and cookie");
                 localStorage.clear();
                 cookie.remove("navigate");
             };
         }
         catch (err) {
-            setErrMsg("Unexpected Error.");
+            setErrMsg("Manual login : unexpected error");
+            console.log("Clear local storage and cookie");
             localStorage.clear();
             cookie.remove("navigate");
             errRef.current.focus();
@@ -167,47 +175,46 @@ export function LoginPage() {
     const [userDataStatus, setUserDataStatus] = useState("false");
 
     const autoLogin = async () => {
+        console.log("Auto login : start");
+        const t0 = performance.now();
         try {
             if (isValidAuth()) {
-                console.log("Local storage authorization found");
-                const rememberMe = jwt_decode(localStorage.getItem("authorization")).rememberMe === "true" ? true : false;
-                const ID = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userID : "";
-                const PWD = rememberMe ? jwt_decode(localStorage.getItem("authorization")).userPWD : "";
+                console.log("Local Storage - authorization : found");
+                const rememberMe = jwt_decode(localStorage.getItem("authorization")).rememberMe === "true";
+                const ID = jwt_decode(localStorage.getItem("authorization")).userID;
+                const PWD = jwt_decode(localStorage.getItem("authorization")).userPWD;
 
-                if (rememberMe) {
-                    if (cookie.load("navigate") === "true") {
-                        console.log("Cookie navigate found");
-                        const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe.toString());
-
-                        if (response["error"] === false) {
-                            localStorage.setItem("authorization", response["data"]["authorization"]);
-                            cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
-                            setUserDataStatus(response["data"]["userDataStatus"]);
-                            setLoading(false);
-                            return setSuccess(true);
-                        }
-                        else {
-                            throw Error("joanne is smart");
-                        };
+                if (cookie.load("navigate") === "true") {
+                    console.log("Cookie - navigate : found");
+                    const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe.toString());
+                    if (response["error"] === false) {
+                        localStorage.setItem("authorization", response["data"]["authorization"]);
+                        cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
+                        setUserDataStatus(response["data"]["userDataStatus"]);
+                        const t1 = performance.now();
+                        console.log(`Auto login : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
+                        setLoading(false);
+                        return setSuccess(true);
                     }
                     else {
-                        cookie.remove("navigate");
-                        console.log("Cookie navigate not found");
-                        setLoading(false);
-                        return setSuccess(false);
+                        throw Error("joanne is smart");
                     };
                 }
                 else {
-                    throw new Error("Local storage authorization expired, clear local storage");
+                    cookie.remove("navigate");
+                    console.log("Cookie - navigate : not found");
+                    setLoading(false);
+                    return setSuccess(false);
                 };
             }
             else {
-                throw new Error("Local storage authorization is invalid");
+                throw new Error("Local Storage - authorization : invalid");
             };
         }
         catch (err) {
             console.log(err.message);
-            console.log("Catch error, clear local storage and cookie");
+            console.log("Auto login : failed");
+            console.log("Clear local storage and cookie");
             localStorage.clear();
             cookie.remove("navigate");
             setLoading(false);

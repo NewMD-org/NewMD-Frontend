@@ -23,10 +23,10 @@ export default class MdTimetableAPI {
 
         try {
             if (ID === "") {
-                throw new Error("Missing Username.")
+                throw new Error("Missing Username")
             }
             else if (PWD === "") {
-                throw new Error("Missing Password.");
+                throw new Error("Missing Password");
             };
 
             const res = await api.post("/users/login",
@@ -46,8 +46,8 @@ export default class MdTimetableAPI {
         }
         catch (err) {
             const errorMessageFilter = [
-                "Missing Username.",
-                "Missing Password."
+                "Missing Username",
+                "Missing Password"
             ];
 
             const ststusCodeFilter = [
@@ -65,10 +65,10 @@ export default class MdTimetableAPI {
                 response["message"] = err.response?.data;
             }
             else if (!err?.response) {
-                response["message"] = "No Server Response.";
+                response["message"] = "No Server Response";
             }
             else {
-                response["message"] = "Unexpected Error.";
+                response["message"] = "Unexpected Error";
             };
         };
 

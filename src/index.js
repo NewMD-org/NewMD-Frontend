@@ -13,16 +13,18 @@ const root = createRoot(container);
 
 root.render(
     <BrowserRouter>
-        <Routes>
-            <Route index element={<Navigate to="/login" />} />
-            <Route path="/*" element={<Navigate to="/login" />} />
-            <Route path="/">
-                <Route path="login" index element={<LoginPage />} />
-                <Route path="logout" index element={<LogoutPage />} />
-                <Route path="table" index element={<TablePage />} />
-                <Route path="privacy-policy" index element={<PrivacyPolicyPage />} />
-            </Route>
-        </Routes>
+        <React.StrictMode>
+            <Routes>
+                <Route index element={<Navigate to="/login" />} />
+                <Route path="/*" element={<Navigate to="/login" />} />
+                <Route path="/">
+                    <Route path="login" index element={<LoginPage />} />
+                    <Route path="logout" index element={<LogoutPage />} />
+                    <Route path="table" index element={<TablePage />} />
+                    <Route path="privacy-policy" index element={<PrivacyPolicyPage />} />
+                </Route>
+            </Routes>
+        </React.StrictMode>
     </BrowserRouter>
 );
 

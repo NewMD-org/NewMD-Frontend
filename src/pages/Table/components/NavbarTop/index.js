@@ -25,12 +25,14 @@ export function NavbarTop({ state, authorization }) {
     const deleteData = async (token) => {
         setIsLoading(true);
         try {
-            console.log("Deleting user data . . .");
+            console.log("Delete user data : start");
+            const t0 = performance.now();
             const response = await new MdTimetableAPI(5).delete(token);
             if (response.status === 200) {
                 setUserDataStatus("false");
                 navigate("/table", { state: { "userDataStatus": false, "tableData": location.state["tableData"], "year": location.state["year"] }, replace: true });
-                console.log(response.data);
+                const t1 = performance.now();
+                console.log(`Delete user data : success (took ${Math.round(t1 - t0) / 1000} seconds)`);
             }
             else {
                 throw Error("Joanne is smart");
@@ -39,18 +41,14 @@ export function NavbarTop({ state, authorization }) {
         catch (err) {
             setUserDataStatus("true");
             if (!err?.response) {
-                console.log("No server response");
+                console.log("Delete user data : no server response");
             }
             else if (err.response?.status === 403) {
                 navigate("/login");
-            }
-            else {
-                console.log("Error occur");
             };
-        }
-        finally {
-            setIsLoading(false);
+            console.log("Delete user data : failed");
         };
+        return setIsLoading(false);
     };
 
     const userDataStatusChange = (checked) => {
