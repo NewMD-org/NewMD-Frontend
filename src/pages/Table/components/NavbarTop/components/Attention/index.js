@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import MdTimetableAPI from "../../../../../../api/MdTimetableAPI";
+import NewMD_API from "../../../../../../api/NewMD_API.js";
 import styles from "./Attention.module.css";
 
 
@@ -18,9 +18,9 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
         try {
             console.log("Save user data : start");
             const t0 = performance.now();
-            const response = await new MdTimetableAPI(60).save(token);
+            const response = await new NewMD_API(60).save(token);
             if (response.status === 200) {
-                const response = await new MdTimetableAPI(40).read(token);
+                const response = await new NewMD_API(40).read(token);
                 if (response.status === 200) {
                     setUserDataStatus("true");
                     navigate("/table", { state: { "userDataStatus": true, "tableData": response.data["table"], "year": response.data["year"] }, replace: true });

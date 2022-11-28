@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import MdTimetableAPI from "../../../../api/MdTimetableAPI";
+import NewMD_API from "../../../../api/NewMD_API.js";
 import { Attention } from "./components/Attention";
 import styles from "./NavbarTop.module.css"
 
@@ -27,7 +27,7 @@ export function NavbarTop({ state, authorization }) {
         try {
             console.log("Delete user data : start");
             const t0 = performance.now();
-            const response = await new MdTimetableAPI(5).delete(token);
+            const response = await new NewMD_API(5).delete(token);
             if (response.status === 200) {
                 setUserDataStatus("false");
                 navigate("/table", { state: { "userDataStatus": false, "tableData": location.state["tableData"], "year": location.state["year"] }, replace: true });

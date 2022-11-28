@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import MdTimetableAPI from "../../../../../../api/MdTimetableAPI";
+import NewMD_API from "../../../../../../api/NewMD_API.js";
 import styles from "./Detail.module.css";
 
 
@@ -68,7 +68,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
             }
             else {
                 console.log("Getting VT : start (direct)");
-                data = await (await new MdTimetableAPI(10).viewvt(year, classID)).data;
+                data = await (await new NewMD_API(10).viewvt(year, classID)).data;
             };
             setMessage(
                 {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import { NavbarTop } from "./components/NavbarTop";
@@ -9,6 +9,10 @@ import styles from "./Table.module.css"
 
 const Table = ({ state, authorization }) => {
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        document.title = "Time Table | NewMD";
+    }, []);
 
     return (
         <>

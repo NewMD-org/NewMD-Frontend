@@ -2,9 +2,9 @@ import { useRef, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import cookie from "react-cookies";
-import MdTimetableAPI from "../../api/MdTimetableAPI.js";
+import NewMD_API from "../../api/NewMD_API.js";
 import { Loader } from "./components/Loader";
-import { InstallPWA } from "./components/InstallPWA/index.js";
+import { InstallPWA } from "./components/InstallPWA";
 import logo from "./logo.svg";
 import background from "./background.svg";
 import styles from "./Login.module.css";
@@ -43,6 +43,8 @@ const Login = () => {
     const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().height > 500);
 
     useEffect(() => {
+        document.title = "Login | NewMD";
+
         IDRef.current.focus();
 
         function handleResize() {
@@ -73,7 +75,7 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe);
+            const response = await new NewMD_API(10).login(ID, PWD, rememberMe);
             if (response["error"] === false) {
                 cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
                 localStorage.setItem("authorization", response["data"]["authorization"]);
@@ -186,7 +188,7 @@ export function LoginPage() {
 
                 if (cookie.load("navigate") === "true") {
                     console.log("Cookie - navigate : found");
-                    const response = await new MdTimetableAPI(10).login(ID, PWD, rememberMe.toString());
+                    const response = await new NewMD_API(10).login(ID, PWD, rememberMe.toString());
                     if (response["error"] === false) {
                         localStorage.setItem("authorization", response["data"]["authorization"]);
                         cookie.save("navigate", "true", { path: "/", maxAge: 60 * 60 * 24 * 7 });
@@ -223,6 +225,7 @@ export function LoginPage() {
     }
 
     useEffect(() => {
+        document.title = "Auto Login | NewMD";
         autoLogin();
     });
 

@@ -1,11 +1,58 @@
 import axios from "axios";
 
 
-const api = axios.create({
-    baseURL: "https://cloud.newmd.eu.org"
-});
+async function testAPI() {
+    console.log("Refresh NewMD_API: start");
 
-export default class MdTimetableAPI {
+    var status0 = false;
+    var status1 = false;
+
+    var availableURL = [];
+
+    try {
+        const cloud0 = await axios.get("https://cloud0.newmd.eu.org/ping", {
+            timeout: 5 * 1000
+        });
+
+        if (cloud0.data === "Service is running.") {
+            status0 = true;
+            availableURL.push(cloud0.config?.url.replace("/ping", ""));
+            console.log("Refresh NewMD_API: cloud0 available");
+        }
+        else {
+            throw new Error("cloud0 unavailable");
+        };
+    } catch (_) {
+        console.log("Refresh NewMD_API: cloud0 unavailable");
+    };
+
+    try {
+        const cloud1 = await axios.get("https://cloud1.newmd.eu.org/ping", {
+            timeout: 5 * 1000
+        });
+
+        if (cloud1.data === "Service is running.") {
+            status1 = true;
+            availableURL.push(cloud1.config?.url.replace("/ping", ""));
+            console.log("Refresh NewMD_API: cloud1 available");
+        }
+        else {
+            throw new Error("cloud1 unavailable");
+        };
+    } catch (_) {
+        console.log("Refresh NewMD_API: cloud1 unavailable");
+    };
+
+    return {
+        availableURL,
+        availability: {
+            "cloud0": status0,
+            "cloud1": status1,
+        }
+    };
+}
+
+export default class NewMD_API {
     constructor(timeoutSec) {
         this.timeoutSeconds = timeoutSec * 1000 | 0;
     }
@@ -29,7 +76,7 @@ export default class MdTimetableAPI {
                 throw new Error("Missing Password");
             };
 
-            const res = await api.post("/users/login",
+            const res = await axios.post((await testAPI()).availableURL[0] + "/users/login",
                 JSON.stringify({ ID, PWD, rememberMe }),
                 {
                     timeout: this.timeoutSeconds,
@@ -75,8 +122,8 @@ export default class MdTimetableAPI {
         return response;
     }
 
-    table(jwt) {
-        return api.get("/table?meetURL=false",
+    async table(jwt) {
+        return await axios.get((await testAPI()).availableURL[0] + "/table?meetURL=false",
             {
                 timeout: this.timeoutSeconds,
                 headers: {
@@ -86,27 +133,16 @@ export default class MdTimetableAPI {
         );
     }
 
-    viewvt(year, classID) {
-        return api.get(`/viewvt?year=${year}&classID=${classID}`,
+    async viewvt(year, classID) {
+        return await axios.get((await testAPI()).availableURL[0] + `/viewvt?year=${year}&classID=${classID}`,
             {
                 timeout: this.timeoutSeconds,
             }
         );
     }
 
-    read(jwt) {
-        return api.get("/database/read",
-            {
-                timeout: this.timeoutSeconds,
-                headers: {
-                    "Authorization": jwt,
-                },
-            }
-        );
-    }
-
-    save(jwt) {
-        return api.get("/database/save",
+    async read(jwt) {
+        return await axios.get((await testAPI()).availableURL[0] + "/database/read",
             {
                 timeout: this.timeoutSeconds,
                 headers: {
@@ -116,8 +152,19 @@ export default class MdTimetableAPI {
         );
     }
 
-    delete(jwt) {
-        return api.get("/database/delete",
+    async save(jwt) {
+        return await axios.get((await testAPI()).availableURL[0] + "/database/save",
+            {
+                timeout: this.timeoutSeconds,
+                headers: {
+                    "Authorization": jwt,
+                },
+            }
+        );
+    }
+
+    async delete(jwt) {
+        return await axios.get((await testAPI()).availableURL[0] + "/database/delete",
             {
                 timeout: this.timeoutSeconds,
                 headers: {

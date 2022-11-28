@@ -24,7 +24,7 @@
 }
 
 .switch_button:before {
-    content: attr(data-content);
+    content: "English";
     position: absolute;
     top: 0;
     bottom: 0;

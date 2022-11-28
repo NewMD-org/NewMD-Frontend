@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import cookie from "react-cookies";
 import axios from "axios";
 import { Detail } from "./components/Detail";
-import MdTimetableAPI from "../../../../api/MdTimetableAPI";
+import NewMD_API from "../../../../api/NewMD_API.js";
 import styles from "./ClassesTable.module.css";
 
 
@@ -104,7 +104,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
         try {
             if (state["userDataStatus"]) {
                 console.log("Getting table data : start (from database)");
-                const response = await new MdTimetableAPI(40).read(token);
+                const response = await new NewMD_API(40).read(token);
                 if (response.status === 200) {
                     setTableData(isBigScreen ? response.data["table"] : await shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
@@ -118,7 +118,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
             }
             else {
                 console.log("Getting table data : start (direct)");
-                const response = await new MdTimetableAPI(40).table(token);
+                const response = await new NewMD_API(40).table(token);
                 if (response.status === 200) {
                     setTableData(isBigScreen ? response.data["table"] : await shortenTableData(response.data["table"]));
                     setShowSat(checkSat(response.data["table"]));
