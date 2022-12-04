@@ -1,68 +1,143 @@
-* {
-    box-sizing: border-box;
+.outside_close {
+    position: fixed;
+    z-index: 8;
+    width: 100%;
+    height: 100%;
 }
 
-.container {
+.header {
+    background-color: #333333;
+    box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, .1);
     position: fixed;
     display: block;
+    width: 100%;
     z-index: 9;
+    color: white;
+}
+
+.header ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+}
+
+.header li a {
+    display: block;
+    padding: 20px 20px;
+    text-decoration: none;
+    text-align: right;
+}
+
+.header .logo {
+    display: block;
+    color: inherit;
+    float: left;
+    font-size: 2rem;
+    padding: 8px 20px;
+    text-decoration: none;
+}
+
+.header .menu {
+    clear: both;
+    max-height: 0;
+    transition: max-height .2s ease-out;
+}
+
+.header .menu_icon {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    margin: 0;
+    padding: 28px 20px;
+    position: relative;
+    user-select: none;
+}
+
+.header .menu_icon .navicon {
+    background-color: white;
+    display: block;
+    height: 2px;
+    position: relative;
+    transition: background .2s ease-out;
+    width: 18px;
+}
+
+.header .menu_icon .navicon:before,
+.header .menu_icon .navicon:after {
+    background-color: white;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    transition: all .2s ease-out;
     width: 100%;
 }
 
-.navbar {
-    background-color: #333333;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 1rem;
+.header .menu_icon .navicon:before {
+    top: 5px;
 }
 
-@media (min-width: 927px) {
-    .title {
-        padding: 5px 16px;
-    }
-
-    .logout a {
-        padding: 16px 16px;
-    }
+.header .menu_icon .navicon:after {
+    top: -5px;
 }
 
-@media (max-width: 927px) {
-    .title {
-        padding: 5px 10px;
-    }
-
-    .logout a {
-        padding: 10px 10px;
-    }
+.header .menu_btn {
+    display: none;
 }
 
-.title {
-    color: inherit;
-    text-decoration: none;
-    font-size: 2rem;
+.header .menu_btn:checked~.menu {
+    max-height: 240px;
 }
 
-.title:hover {
-    color: inherit;
-    text-decoration: none;
-    cursor: pointer;
+.header .menu_btn:checked~.menu_icon .navicon {
+    background: transparent;
+}
+
+.header .menu_btn:checked~.menu_icon .navicon:before {
+    transform: rotate(-45deg);
+}
+
+.header .menu_btn:checked~.menu_icon .navicon:after {
+    transform: rotate(45deg);
+}
+
+.header .menu_btn:checked~.menu_icon:not(.steps) .navicon:before,
+.header .menu_btn:checked~.menu_icon:not(.steps) .navicon:after {
+    top: 0;
+}
+
+@media (min-width: 930px) {
+    .header li {
+        float: left;
+    }
+
+    .header li a {
+        padding: 20px 30px;
+    }
+
+    .header .menu {
+        clear: none;
+        float: right;
+        max-height: none;
+    }
+
+    .header .menu_icon {
+        display: none;
+    }
 }
 
 .saveData {
-    display: flex;
-    align-items: center;
-    top: 50%;
-    transform: translateY(-50%);
+    height: 100%;
+    display: block;
+    padding: 20px 20px;
+    text-decoration: none;
+    text-align: right;
+    z-index: 999;
 }
 
-.navbar ul {
-    padding: 0;
+.saveData .switch {
     margin: 0;
-    list-style: none;
-    list-style-type: none;
-    display: flex;
 }
 
 .logout a {
@@ -73,6 +148,7 @@
     align-items: center;
 }
 
-.logout:hover {
-    background-color: #777;
+li:hover {
+    cursor: pointer;
+    background-color: #ffffff1a;
 }

@@ -178,6 +178,7 @@ export function LoginPage() {
 
     const autoLogin = async () => {
         console.log("Auto login : start");
+        document.title = "Auto Login | NewMD";
         const t0 = performance.now();
         try {
             if (isValidAuth()) {
@@ -205,6 +206,8 @@ export function LoginPage() {
                 else {
                     cookie.remove("navigate");
                     console.log("Cookie - navigate : not found");
+                    console.log("Auto login : failed");
+
                     setLoading(false);
                     return setSuccess(false);
                 };
@@ -217,6 +220,7 @@ export function LoginPage() {
             console.log(err.message);
             console.log("Auto login : failed");
             console.log("Clear local storage and cookie");
+
             localStorage.clear();
             cookie.remove("navigate");
             setLoading(false);
@@ -225,7 +229,7 @@ export function LoginPage() {
     }
 
     useEffect(() => {
-        document.title = "Auto Login | NewMD";
+        document.title = "Login | NewMD";
         autoLogin();
     });
 

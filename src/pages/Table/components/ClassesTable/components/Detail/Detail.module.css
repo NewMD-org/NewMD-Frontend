@@ -172,11 +172,28 @@
 
 .field {
     display: block;
-    max-width: 360px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     padding: 8px 16px;
+    line-height: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    border-radius: 6px;
+    color: #e2e2e2;
+    border: 2px solid var(--input-border);
+    transition: border 0.3s ease;
+}
+
+.field_none {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+    padding: 8px 16px;
+    margin: 0;
     line-height: 25px;
     font-size: 14px;
     font-weight: 500;
@@ -251,7 +268,8 @@
     border-color: var(--group-border-focus);
 }
 
-.form:hover>.field {
+.form:hover>.field,
+.form:hover>.field_none {
     outline: none;
     border-color: var(--group-border-focus);
 }

@@ -185,3 +185,7 @@
     opacity: 1;
     transition: 0s;
 }
+
+.signin:focus {
+    outline: 0;
+}

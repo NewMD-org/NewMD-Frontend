@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import NewMD_API from "../../../../api/NewMD_API.js";
@@ -21,6 +21,8 @@ export function NavbarTop({ state, authorization }) {
 
     const location = useLocation();
     const navigate = useNavigate();
+    const saveDataInput = useRef(null);
+    const menu = useRef(null);
 
     const deleteData = async (token) => {
         setIsLoading(true);
@@ -63,15 +65,19 @@ export function NavbarTop({ state, authorization }) {
     return (
         <>
             {showAttention ? <Attention setIsLoading={setIsLoading} setShowAttention={setShowAttention} setUserDataStatus={setUserDataStatus} authorization={authorization} /> : <></>}
-            <div className={styles.container}>
-                <nav className={styles.navbar}>
-                    <Link to="/" className={join(styles.title, "noselect")} onClick={removeCookie}>
-                        NewMD
-                    </Link>
-                    <ul>
-                        <li>
-                            <div className={join(styles.saveData, "noselect", "pretty", "p-switch", "p-fill")}>
-                                <input type="checkbox" name="userDataStatus" checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
+            <header className={styles.header}>
+                <Link to="/" className={join(styles.logo, "noselect")} onClick={removeCookie}>
+                    NewMD
+                </Link>
+                <input className={styles.menu_btn} type="checkbox" id="menu-btn" ref={menu} />
+                <label className={styles.menu_icon} htmlFor="menu-btn">
+                    <span className={styles.navicon}></span>
+                </label>
+                <ul className={styles.menu}>
+                    <li>
+                        <div className={styles.saveData} onClick={() => saveDataInput.current.click()} style={isLoading ? { "cursor": "not-allowed" } : {}}>
+                            <div className={join(styles.switch, "noselect", "pretty", "p-switch", "p-fill")}>
+                                <input type="checkbox" name="userDataStatus" ref={saveDataInput} checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
                                 <div className={"state p-success"}>
                                     <label>
                                         {isLoading ? (
@@ -86,14 +92,17 @@ export function NavbarTop({ state, authorization }) {
                                     </label>
                                 </div>
                             </div>
-                        </li>
-                        <li className={join(styles.logout, "noselect")}>
+                        </div>
+                    </li>
+                    <li>
+                        <div className={join(styles.logout, "noselect")}>
                             <Link to="/logout">
                                 Logout
                             </Link>
-                        </li>
-                    </ul>
-                </nav>
-            </div></>
+                        </div>
+                    </li>
+                </ul>
+            </header>
+        </>
     );
 }

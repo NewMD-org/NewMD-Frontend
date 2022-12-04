@@ -11,7 +11,10 @@ async function testAPI() {
 
     try {
         const cloud0 = await axios.get("https://cloud0.newmd.eu.org/ping", {
-            timeout: 5 * 1000
+            timeout: 2 * 1000,
+            validateStatus: function (status) {
+                return status >= 200 && status < 500; // default
+            }
         });
 
         if (cloud0.data === "Service is running.") {
@@ -28,7 +31,7 @@ async function testAPI() {
 
     try {
         const cloud1 = await axios.get("https://cloud1.newmd.eu.org/ping", {
-            timeout: 5 * 1000
+            timeout: 2 * 1000
         });
 
         if (cloud1.data === "Service is running.") {
@@ -42,6 +45,8 @@ async function testAPI() {
     } catch (_) {
         console.log("Refresh NewMD_API: cloud1 unavailable");
     };
+
+    console.log("Refresh NewMD_API: using " + availableURL[0]);
 
     return {
         availableURL,

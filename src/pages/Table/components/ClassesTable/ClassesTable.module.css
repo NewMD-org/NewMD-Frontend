@@ -60,6 +60,7 @@
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     text-align: center;
+    padding: 15px 0;
 }
 
 .data:hover {
@@ -72,6 +73,7 @@
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     text-align: center;
+    padding: 15px 0;
 }
 
 .classname {
