@@ -2,7 +2,7 @@
 <h3>Website : <a href="https://newmd.eu.org" target="_blank" title="NewMD">newmd.eu.org</a></h3>
 <h6><em>This is the beta version. It does not represent the final quality.</em></h6>
 
-## Website status
+## Frontend status
 
 More details : [**Better Uptime**](https://status.newmd.eu.org)
 
