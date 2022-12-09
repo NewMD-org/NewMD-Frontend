@@ -77,7 +77,7 @@ export function NavbarTop({ state, authorization }) {
                     <li>
                         <div className={styles.saveData} onClick={() => saveDataInput.current.click()} style={isLoading ? { "cursor": "not-allowed" } : {}}>
                             <div className={join(styles.switch, "noselect", "pretty", "p-switch", "p-fill")}>
-                                <input type="checkbox" name="userDataStatus" ref={saveDataInput} checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
+                                <input  className={styles.saveDataCheckbox} type="checkbox" name="userDataStatus" ref={saveDataInput} checked={userDataStatus === "true"} disabled={isLoading} onChange={(e) => userDataStatusChange(e.target.checked)} />
                                 <div className={"state p-success"}>
                                     <label>
                                         {isLoading ? (
