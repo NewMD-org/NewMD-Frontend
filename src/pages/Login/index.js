@@ -178,7 +178,6 @@ export function LoginPage() {
 
     const autoLogin = async () => {
         console.log("Auto login : start");
-        document.title = "Auto Login | NewMD";
         const t0 = performance.now();
         try {
             if (isValidAuth()) {
@@ -188,6 +187,7 @@ export function LoginPage() {
                 const PWD = jwt_decode(localStorage.getItem("authorization")).userPWD;
 
                 if (cookie.load("navigate") === "true") {
+                    document.title = "Auto Login | NewMD";
                     console.log("Cookie - navigate : found");
                     const response = await new NewMD_API(10).login(ID, PWD, rememberMe.toString());
                     if (response["error"] === false) {
