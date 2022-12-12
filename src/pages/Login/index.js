@@ -40,32 +40,16 @@ const Login = () => {
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().height > 500);
 
     useEffect(() => {
         document.title = "Login | NewMD";
 
         IDRef.current.focus();
-
-        function handleResize() {
-            setIsBigScreen(getWindowDimensions().height > 500);
-        }
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     useEffect(() => {
         setErrMsg("");
     }, [ID, PWD, rememberMe]);
-
-    function getWindowDimensions() {
-        const { innerWidth: width, innerHeight: height } = window;
-        return {
-            width,
-            height
-        };
-    }
 
     const handleSubmit = async (e) => {
         console.log("Manual login : start");
@@ -124,16 +108,10 @@ const Login = () => {
             ) : (
                 <>
                     <div className={join(styles.background, "noselect")} style={{ backgroundImage: `url(${background})` }}>
-                        {isBigScreen ? (
-                            <div className={styles.top}>
-                                <div className={styles.logo}>
-                                    <img alt="logo" src={logo} draggable="false" />
-                                </div>
+                        <div className={styles.centerContainer}>
+                            <div className={styles.logo}>
+                                <img alt="logo" src={logo} draggable="false" />
                             </div>
-                        ) : (
-                            <></>
-                        )}
-                        <div className={styles.bottom}>
                             <div className={styles.center}>
                                 <p ref={errRef} className={errMsg ? styles.errmsg : styles.offscreen} aria-live="assertive">{errMsg}</p>
                                 <form className={styles.form} onSubmit={handleSubmit}>
@@ -161,8 +139,8 @@ const Login = () => {
                                         )}
                                     </div>
                                 </form>
+                                <InstallPWA />
                             </div>
-                            <InstallPWA />
                         </div>
                     </div>
                 </>

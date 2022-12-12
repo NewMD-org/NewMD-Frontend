@@ -1,8 +1,4 @@
 @media (min-width: 931px) {
-    .container {
-        align-items: center;
-    }
-
     .table {
         height: 85%;
         width: 70%;
@@ -17,7 +13,9 @@
     .table {
         height: 100%;
         width: 100%;
-        padding-top: 58px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 42px;
     }
 }
 
@@ -26,6 +24,7 @@
     flex-wrap: wrap;
     width: 100%;
     height: 100%;
+    align-items: center;
 }
 
 .table {
@@ -60,7 +59,7 @@
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     text-align: center;
-    padding: 15px 0;
+    padding: 15px 5px;
 }
 
 .data:hover {
@@ -73,7 +72,7 @@
     background-color: rgba(0, 0, 0, 0.3);
     color: #fff;
     text-align: center;
-    padding: 15px 0;
+    padding: 5px 5px;
 }
 
 .classname {

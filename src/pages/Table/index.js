@@ -4,7 +4,8 @@ import cookie from "react-cookies";
 import { NavbarTop } from "./components/NavbarTop";
 import { ClassesTable } from "./components/ClassesTable";
 import { Loader } from "./components/Loader";
-import styles from "./Table.module.css"
+import snowdrift from "./snowdrift.png";
+import styles from "./Table.module.css";
 
 
 const Table = ({ state, authorization }) => {

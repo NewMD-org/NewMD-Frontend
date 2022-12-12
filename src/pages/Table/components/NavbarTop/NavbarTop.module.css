@@ -24,7 +24,7 @@
 
 .header li a {
     display: block;
-    padding: 20px 20px;
+    padding: 12px 10px;
     text-decoration: none;
     text-align: right;
 }
@@ -33,8 +33,8 @@
     display: block;
     color: inherit;
     float: left;
-    font-size: 2rem;
-    padding: 8px 20px;
+    font-size: 1.5rem;
+    padding: 7px 5px;
     text-decoration: none;
 }
 
@@ -49,7 +49,7 @@
     display: inline-block;
     float: right;
     margin: 0;
-    padding: 28px 20px;
+    padding: 20px 20px;
     position: relative;
     user-select: none;
 }
@@ -107,30 +107,10 @@
     top: 0;
 }
 
-@media (min-width: 930px) {
-    .header li {
-        float: left;
-    }
-
-    .header li a {
-        padding: 20px 30px;
-    }
-
-    .header .menu {
-        clear: none;
-        float: right;
-        max-height: none;
-    }
-
-    .header .menu_icon {
-        display: none;
-    }
-}
-
 .saveData {
     height: 100%;
     display: block;
-    padding: 20px 20px;
+    padding: 12px 10px;
     text-decoration: none;
     text-align: right;
     z-index: 999;
@@ -150,7 +130,45 @@
     align-items: center;
 }
 
+li {
+    border-top: 1px solid gray;
+}
+
 li:hover {
     cursor: pointer;
     background-color: #ffffff1a;
+}
+
+@media (min-width: 930px) {
+    .header li {
+        float: left;
+        border: none;
+    }
+
+    .header li a {
+        padding: 20px 30px;
+    }
+
+    .header .menu {
+        clear: none;
+        float: right;
+        max-height: none;
+    }
+
+    .header .menu_icon {
+        display: none;
+    }
+
+    .saveData {
+        padding: 20px 20px;
+    }
+
+    .header .menu_icon {
+        padding: 28px 20px;
+    }
+
+    .header .logo {
+        font-size: 2rem;
+        padding: 10px 20px;
+    }
 }
