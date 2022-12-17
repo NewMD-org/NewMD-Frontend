@@ -22,13 +22,13 @@ export function InstallPWA() {
         evt.preventDefault();
         if (!promptInstall) {
             return;
-        };
+        }
         promptInstall.prompt();
     };
 
     if (!supportsPWA) {
         return null;
-    };
+    }
 
     return (
         <div className={styles.pwa_container}>
@@ -37,4 +37,4 @@ export function InstallPWA() {
             </button>
         </div>
     );
-};
+}

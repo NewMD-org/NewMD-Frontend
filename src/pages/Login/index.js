@@ -20,7 +20,7 @@ function isValidAuth() {
     }
     catch (err) {
         return false;
-    };
+    }
 }
 
 function join(...array) {
@@ -80,7 +80,7 @@ const Login = () => {
                 }
                 else {
                     errRef.current.focus();
-                };
+                }
 
                 setErrMsg(response["message"]);
                 console.log(`Manual login : ${response["message"]}`);
@@ -88,7 +88,7 @@ const Login = () => {
                 console.log("Clear local storage and cookie");
                 localStorage.clear();
                 cookie.remove("navigate");
-            };
+            }
         }
         catch (err) {
             setErrMsg("Manual login : unexpected error");
@@ -96,7 +96,7 @@ const Login = () => {
             localStorage.clear();
             cookie.remove("navigate");
             errRef.current.focus();
-        };
+        }
 
         return setLoading(false);
     };
@@ -147,7 +147,7 @@ const Login = () => {
             )}
         </>
     );
-}
+};
 
 export function LoginPage() {
     const [success, setSuccess] = useState(false);
@@ -179,7 +179,7 @@ export function LoginPage() {
                     }
                     else {
                         throw Error("joanne is smart");
-                    };
+                    }
                 }
                 else {
                     cookie.remove("navigate");
@@ -188,11 +188,11 @@ export function LoginPage() {
 
                     setLoading(false);
                     return setSuccess(false);
-                };
+                }
             }
             else {
                 throw new Error("Local Storage - authorization : invalid");
-            };
+            }
         }
         catch (err) {
             console.log(err.message);
@@ -203,8 +203,8 @@ export function LoginPage() {
             cookie.remove("navigate");
             setLoading(false);
             return setSuccess(false);
-        };
-    }
+        }
+    };
 
     useEffect(() => {
         document.title = "Login | NewMD";

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
 import NewMD_API from "../../../../api/NewMD_API.js";
 import { Attention } from "./components/Attention";
-import styles from "./NavbarTop.module.css"
+import styles from "./NavbarTop.module.css";
 
 
 function removeCookie() {
@@ -38,7 +38,7 @@ export function NavbarTop({ state, authorization }) {
             }
             else {
                 throw Error("Joanne is smart");
-            };
+            }
         }
         catch (err) {
             setUserDataStatus("true");
@@ -47,9 +47,9 @@ export function NavbarTop({ state, authorization }) {
             }
             else if (err.response?.status === 403) {
                 navigate("/login");
-            };
+            }
             console.log("Delete user data : failed");
-        };
+        }
         return setIsLoading(false);
     };
 
@@ -59,7 +59,7 @@ export function NavbarTop({ state, authorization }) {
         }
         else {
             deleteData(authorization);
-        };
+        }
     };
 
     return (

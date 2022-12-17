@@ -1,7 +1,7 @@
 import { Message } from "./components/Message";
 import logo from "./logo.svg";
 import background from "./background.svg";
-import styles from "./PrivacyPolicy.module.css"
+import styles from "./PrivacyPolicy.module.css";
 
 
 function join(...array) {

@@ -13,9 +13,9 @@ function findPath(obj, target) {
         for (let ele of Object.keys(obj[day])) {
             if (obj[day][ele]["classID"] === target) {
                 return [day, ele];
-            };
-        };
-    };
+            }
+        }
+    }
 }
 
 const copyToClipboard = async (text) => {
@@ -23,7 +23,7 @@ const copyToClipboard = async (text) => {
         return await navigator.clipboard.writeText(text);
     } else {
         return document.execCommand("copy", true, text);
-    };
+    }
 };
 
 export function Detail({ setShowDetail, setDetail, detail }) {
@@ -37,7 +37,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
     useEffect(() => {
         if (Object.keys(message).length !== 0) {
             setIsLoading(false);
-        };
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [message]);
 
@@ -69,7 +69,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
             else {
                 console.log("Getting VT : start (direct)");
                 data = await (await new NewMD_API(10).viewvt(year, classID)).data;
-            };
+            }
             setMessage(
                 {
                     meet: data["meet"] === "" ? "none" : data["meet"],
@@ -83,7 +83,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
         catch (err) {
             console.log("Getting VT : failed");
             closeModal();
-        };
+        }
         setIsLoading(false);
     };
 
@@ -117,7 +117,7 @@ export function Detail({ setShowDetail, setDetail, detail }) {
                                     </>
                                 ) : (
                                     <>
-                                        <a className={join(styles.field, "yesselect")} href={message.meet} target="_blank">{message.meet}</a>
+                                        <a className={join(styles.field, "yesselect")} href={message.meet} target="_blank" rel="noreferrer">{message.meet}</a>
                                         <span title="Copy" onClick={() => { copyToClipboard(message.meet); setCopySuccess0(true); }} onMouseLeave={() => setCopySuccess0(false)}>{copySuccess0 ? <>&#x2714;</> : <>&#x1F4CB;</>}</span>
                                     </>
                                 )}

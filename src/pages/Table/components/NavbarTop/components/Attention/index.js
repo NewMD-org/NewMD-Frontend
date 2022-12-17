@@ -30,22 +30,22 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
                 }
                 else {
                     throw Error("Joanne is smart");
-                };
+                }
             }
             else {
                 throw Error("Joanne is smart");
-            };
+            }
         }
         catch (err) {
             setUserDataStatus("false");
             if (!err?.response) {
                 console.log("Save user data : no server response");
-            };
+            }
             console.log("Save user data : failed");
         }
         finally {
             setIsLoading(false);
-        };
+        }
     };
 
     const closeModal = useCallback(_ => {
@@ -57,7 +57,7 @@ export function Attention({ setIsLoading, setShowAttention, setUserDataStatus, a
         if (agree === true) {
             saveData(authorization);
             closeModal();
-        };
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [agree]);
 

@@ -4,7 +4,7 @@ import styles from "./Loader.module.css";
 
 function random(x) {
     return Math.floor(Math.random() * x);
-};
+}
 
 export function Loader() {
     const message = [
@@ -30,4 +30,4 @@ export function Loader() {
             </div>
         </div>
     );
-};
+}

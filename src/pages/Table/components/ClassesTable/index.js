@@ -21,7 +21,7 @@ const shortenTableData = async (data) => {
 
     try {
         console.log("Getting classname replacement : start");
-        const replacementJSON = await axios.get("https://raw.githubusercontent.com/NewMD-org/Frontend-classnameReplacement/main/classnameReplacement.json");
+        const replacementJSON = await axios.get("https://raw.githubusercontent.com/NewMD-org/Configurations/main/Frontend/classnameReplacement.json");
         replacements = replacementJSON.data ? replacementJSON.data["replacements"] : [];
 
         const t1 = performance.now();
@@ -30,14 +30,14 @@ const shortenTableData = async (data) => {
     catch (err) {
         replacements = [];
         console.log("Getting classname replacement : failed");
-    };
+    }
 
     for (let replacement of replacements) {
         dataString = dataString.replace(new RegExp(replacement[0], "gm"), replacement[1]);
-    };
+    }
 
     return JSON.parse(dataString);
-}
+};
 
 export function ClassesTable({ isLoading, setIsLoading, state, authorization }) {
     const [isBigScreen, setIsBigScreen] = useState(getWindowDimensions().width > 930);
@@ -65,7 +65,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
             }
             window.addEventListener("resize", handleResize);
             return () => window.removeEventListener("resize", handleResize);
-        };
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.state]);
 
@@ -92,10 +92,10 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
             if (obj["day6"][index]["classname"] !== "") {
                 haveData = true;
                 break;
-            };
-        };
+            }
+        }
         return haveData;
-    }
+    };
 
     const fetchData = async (token) => {
         setIsLoading(true);
@@ -114,7 +114,7 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                 }
                 else {
                     throw Error("Joanne is smart");
-                };
+                }
             }
             else {
                 console.log("Getting table data : start (direct)");
@@ -128,19 +128,19 @@ export function ClassesTable({ isLoading, setIsLoading, state, authorization }) 
                 }
                 else {
                     throw Error("Joanne is smart");
-                };
-            };
+                }
+            }
         }
         catch (err) {
             if (!err?.response) {
                 console.log("Getting table data : no server response");
-            };
+            }
             console.log("Getting table data : failed");
             console.log("Clear cookie");
             cookie.remove("navigate");
             navigate("/");
-        };
-    }
+        }
+    };
 
     return (
         <div className={styles.container}>

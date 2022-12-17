@@ -24,27 +24,27 @@ async function testAPI() {
         }
         else {
             throw new Error("cloud0 unavailable");
-        };
+        }
     } catch (_) {
         console.log("Refresh NewMD_API: cloud0 unavailable");
-    };
+    }
 
     try {
         const cloud1 = await axios.get("https://cloud1.newmd.eu.org/ping", {
             timeout: 2 * 1000
         });
 
-        if (cloud1.data === "Service is running.") {
+        if (cloud1.data === "Service is running") {
             status1 = true;
             availableURL.push(cloud1.config?.url.replace("/ping", ""));
             console.log("Refresh NewMD_API: cloud1 available");
         }
         else {
             throw new Error("cloud1 unavailable");
-        };
+        }
     } catch (_) {
         console.log("Refresh NewMD_API: cloud1 unavailable");
-    };
+    }
 
     console.log("Refresh NewMD_API: using " + availableURL[0]);
 
@@ -75,11 +75,11 @@ export default class NewMD_API {
 
         try {
             if (ID === "") {
-                throw new Error("Missing Username")
+                throw new Error("Missing Username");
             }
             else if (PWD === "") {
                 throw new Error("Missing Password");
-            };
+            }
 
             const res = await axios.post((await testAPI()).availableURL[0] + "/users/login",
                 JSON.stringify({ ID, PWD, rememberMe }),
@@ -121,8 +121,8 @@ export default class NewMD_API {
             }
             else {
                 response["message"] = "Unexpected Error";
-            };
-        };
+            }
+        }
 
         return response;
     }

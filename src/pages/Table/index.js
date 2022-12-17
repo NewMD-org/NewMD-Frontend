@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 import { NavbarTop } from "./components/NavbarTop";
 import { ClassesTable } from "./components/ClassesTable";
 import { Loader } from "./components/Loader";
-import snowdrift from "./snowdrift.png";
+// import snowdrift from "./snowdrift.png";
 import styles from "./Table.module.css";
 
 
@@ -24,7 +24,7 @@ const Table = ({ state, authorization }) => {
             </div>
         </>
     );
-}
+};
 
 export function TablePage() {
     const { state } = useLocation();
@@ -36,7 +36,7 @@ export function TablePage() {
         }
         else {
             return (<Navigate to="/" />);
-        };
+        }
     }
     catch (err) {
         console.log(err);
@@ -44,5 +44,5 @@ export function TablePage() {
         cookie.remove("navigate");
         console.log("Catch error, clear local storage and cookie");
         return (<Navigate to="/" />);
-    };
+    }
 }
